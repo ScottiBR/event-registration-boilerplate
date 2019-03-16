@@ -4,7 +4,8 @@ import {
   ON_HIDE_LOADER,
   ON_SHOW_LOADER,
   SHOW_MESSAGE,
-  SIGNIN_USER_SUCCESS
+  SIGNIN_USER_SUCCESS,
+  SIGNIN_SET_CPF
 } from "constants/ActionTypes";
 
 const INIT_STATE = {
@@ -12,11 +13,19 @@ const INIT_STATE = {
   alertMessage: "",
   showMessage: false,
   initURL: "",
-  authUser: null
+  authUser: null,
+  cpf: null,
+  registrationID: null
 };
 
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
+    case SIGNIN_SET_CPF: {
+      return {
+        ...state,
+        cpf: action.payload
+      };
+    }
     case SIGNIN_USER_SUCCESS: {
       return {
         ...state,

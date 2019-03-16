@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import formatCpf from "@brazilian-utils/format-cpf";
+import isValidCpf from "@brazilian-utils/is-valid-cpf";
 import { DatePicker } from "material-ui-pickers";
 import moment from "moment";
 import {
@@ -14,18 +16,15 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import {
   hideMessage,
   showAuthLoader,
-  userFacebookSignIn,
-  userGithubSignIn,
-  userGoogleSignIn,
   userSignIn,
-  userTwitterSignIn
+  setCPF,
+  showAuthMessage
 } from "actions/Auth";
 
 class SignIn extends React.Component {
   constructor() {
     super();
     this.state = {
-      login: "",
       password: "",
       selectedDate: "2017-05-24"
     };
@@ -43,13 +42,17 @@ class SignIn extends React.Component {
   }
   handleDateChange = event =>
     this.setState({ selectedDate: event.target.value });
-  handleLoginValue = event => this.setState({ login: event.target.value });
+
+  handleCpfValue = event => {
+    const cpfValue = event.target.value.replace(/[^\d]+/g, "");
+    this.props.setCPF(parseFloat(cpfValue));
+  };
   handlePasswordValue = event =>
     this.setState({ password: event.target.value });
 
   handleKeyPress = event => {
     if (event.key === "Enter") {
-      this.handleSignIn();
+      this.handleSignInValidation();
     }
   };
 
@@ -59,9 +62,22 @@ class SignIn extends React.Component {
     this.props.userSignIn({ login, password });
   };
 
+  handleSignInValidation = () => {
+    const { selectedDate, password } = this.state;
+    const { cpf, registrationID } = this.props;
+    if (!isValidCpf(cpf)) {
+      this.props.showAuthMessage("CPF INVALIDO");
+    }
+  };
   render() {
-    const { login, password, selectedDate } = this.state;
-    const { showMessage, loader, alertMessage } = this.props;
+    const { password, selectedDate } = this.state;
+    const {
+      showMessage,
+      loader,
+      alertMessage,
+      cpf,
+      registrationID
+    } = this.props;
     return (
       <div className="app-login-container d-flex justify-content-center align-items-center animated slideInUpTiny animation-duration-3">
         <div className="app-login-main-content">
@@ -88,10 +104,11 @@ class SignIn extends React.Component {
                   <TextField
                     label={<IntlMessages id="appModule.cpf" />}
                     fullWidth
-                    onChange={this.handleLoginValue}
-                    defaultValue={login}
+                    onChange={this.handleCpfValue}
+                    value={formatCpf(cpf)}
                     onKeyPress={this.handleKeyPress}
                     margin="normal"
+                    disabled={registrationID !== null}
                     autoFocus={true}
                     className="mt-1 my-sm-3"
                   />
@@ -116,9 +133,9 @@ class SignIn extends React.Component {
                     className="mt-1 my-sm-3"
                   />
 
-                  <div className="mb-3 d-flex align-items-center justify-content-center">
+                  <div className="mb-3 d-flex flex-column align-items-center justify-content-center">
                     <Button
-                      onClick={this.handleSignIn}
+                      onClick={this.handleSignInValidation}
                       variant="contained"
                       color="secondary"
                     >
@@ -151,8 +168,15 @@ class SignIn extends React.Component {
 }
 
 const mapStateToProps = ({ auth }) => {
-  const { loader, alertMessage, showMessage, authUser } = auth;
-  return { loader, alertMessage, showMessage, authUser };
+  const {
+    loader,
+    alertMessage,
+    showMessage,
+    authUser,
+    registrationID,
+    cpf
+  } = auth;
+  return { loader, alertMessage, showMessage, authUser, registrationID, cpf };
 };
 
 export default connect(
@@ -161,9 +185,7 @@ export default connect(
     userSignIn,
     hideMessage,
     showAuthLoader,
-    userFacebookSignIn,
-    userGoogleSignIn,
-    userGithubSignIn,
-    userTwitterSignIn
+    setCPF,
+    showAuthMessage
   }
 )(SignIn);
