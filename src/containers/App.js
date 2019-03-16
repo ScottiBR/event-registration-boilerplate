@@ -14,6 +14,8 @@ import SignIn from "./SignIn";
 import { setInitUrl } from "../actions/Auth";
 import RTL from "util/RTL";
 import asyncComponent from "util/asyncComponent";
+import CpfCheck from "./CpfCheck";
+import SignInBday from "./SignInBday";
 
 const RestrictedRoute = ({ component: Component, authUser, ...rest }) => (
   <Route
@@ -48,11 +50,16 @@ class App extends Component {
       locale,
       authUser,
       initURL,
-      isDirectionRTL
+      isDirectionRTL,
+      registrationID
     } = this.props;
     if (location.pathname === "/") {
       if (authUser === null) {
-        return <Redirect to={"/signin"} />;
+        if (registrationID === null) {
+          return <Redirect to={"/cpf"} />;
+        } else {
+          return <Redirect to={"/signin"} />;
+        }
       } else if (initURL === "" || initURL === "/" || initURL === "/signin") {
         return <Redirect to={"/app/start"} />;
       } else {
@@ -86,7 +93,9 @@ class App extends Component {
                     authUser={authUser}
                     component={MainApp}
                   />
+                  <Route path="/cpf" component={CpfCheck} />
                   <Route path="/signin" component={SignIn} />
+                  <Route path="/signinBday" component={SignInBday} />
                   <Route
                     component={asyncComponent(() =>
                       import("components/Error404")
@@ -104,8 +113,15 @@ class App extends Component {
 
 const mapStateToProps = ({ settings, auth }) => {
   const { sideNavColor, locale, isDirectionRTL } = settings;
-  const { authUser, initURL } = auth;
-  return { sideNavColor, locale, isDirectionRTL, authUser, initURL };
+  const { authUser, initURL, registrationID } = auth;
+  return {
+    sideNavColor,
+    locale,
+    isDirectionRTL,
+    authUser,
+    initURL,
+    registrationID
+  };
 };
 
 export default connect(

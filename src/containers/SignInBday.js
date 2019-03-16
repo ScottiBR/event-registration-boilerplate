@@ -86,27 +86,17 @@ class SignIn extends React.Component {
               <form>
                 <fieldset>
                   <TextField
-                    label={<IntlMessages id="appModule.cpf" />}
+                    label={<IntlMessages id="appModule.birthday" />}
+                    type="date"
                     fullWidth
-                    onChange={this.handleLoginValue}
-                    defaultValue={login}
-                    onKeyPress={this.handleKeyPress}
-                    margin="normal"
-                    autoFocus={true}
-                    className="mt-1 my-sm-3"
-                  />
-                  <TextField
-                    type="password"
-                    label={<IntlMessages id="appModule.password" />}
-                    fullWidth
-                    onChange={this.handlePasswordValue}
-                    defaultValue={password}
+                    onChange={this.handleDateChange}
+                    defaultValue={selectedDate}
                     onKeyPress={this.handleKeyPress}
                     margin="normal"
                     className="mt-1 my-sm-3"
                   />
 
-                  <div className="mb-3 d-flex flex-column align-items-center justify-content-center">
+                  <div className="mb-3 d-flex align-items-center justify-content-center">
                     <Button
                       onClick={this.handleSignIn}
                       variant="contained"
@@ -114,14 +104,6 @@ class SignIn extends React.Component {
                     >
                       <IntlMessages id="appModule.signin" />
                     </Button>
-                    <div>
-                      <Link
-                        to="/app/app-module/forgot-password-1"
-                        title="Reset Password"
-                      >
-                        <IntlMessages id="appModule.forgotPassword" />
-                      </Link>
-                    </div>
                   </div>
                 </fieldset>
               </form>

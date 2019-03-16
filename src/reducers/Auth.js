@@ -12,7 +12,9 @@ const INIT_STATE = {
   alertMessage: "",
   showMessage: false,
   initURL: "",
-  authUser: null
+  authUser: null,
+  registrationID: null,
+  cpf: ""
 };
 
 export default (state = INIT_STATE, action) => {
