@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import Header from "components/Header/index";
-import Sidebar from "containers/SideNav/index";
 import Footer from "components/Footer";
 import {
   ABOVE_THE_HEADER,
@@ -13,7 +12,6 @@ import {
 } from "constants/ActionTypes";
 import { isIOS, isMobile } from "react-device-detect";
 import asyncComponent from "../util/asyncComponent";
-import TopNav from "components/TopNav";
 
 class App extends React.Component {
   render() {
@@ -38,7 +36,6 @@ class App extends React.Component {
 
     return (
       <div className={`app-container ${drawerStyle}`}>
-        <Sidebar />
         <div className="app-main-container">
           <div
             className={`app-header ${
@@ -47,13 +44,7 @@ class App extends React.Component {
                 : ""
             }`}
           >
-            {navigationStyle === HORIZONTAL_NAVIGATION &&
-              horizontalNavPosition === ABOVE_THE_HEADER && (
-                <TopNav styleName="app-top-header" />
-              )}
             <Header />
-            {navigationStyle === HORIZONTAL_NAVIGATION &&
-              horizontalNavPosition === BELOW_THE_HEADER && <TopNav />}
           </div>
 
           <main className="app-main-content-wrapper">

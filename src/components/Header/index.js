@@ -38,25 +38,6 @@ class Header extends React.Component {
         }`}
       >
         <Toolbar className="app-toolbar" disableGutters={false}>
-          {navigationStyle === HORIZONTAL_NAVIGATION ? (
-            <div
-              className="d-block d-md-none pointer mr-3"
-              onClick={this.onToggleCollapsedNav}
-            >
-              <span className="jr-menu-icon">
-                <span className="menu-icon" />
-              </span>
-            </div>
-          ) : (
-            <IconButton
-              className={`jr-menu-icon mr-3 ${drawerStyle}`}
-              aria-label="Menu"
-              onClick={this.onToggleCollapsedNav}
-            >
-              <span className="menu-icon" />
-            </IconButton>
-          )}
-
           <Link className="app-logo mr-2" to="/">
             <img
               src={require("assets/images/logo-white.png")}

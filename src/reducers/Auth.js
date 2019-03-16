@@ -4,9 +4,7 @@ import {
   ON_HIDE_LOADER,
   ON_SHOW_LOADER,
   SHOW_MESSAGE,
-  SIGNIN_USER_SUCCESS,
-  SIGNOUT_USER_SUCCESS,
-  SIGNUP_USER_SUCCESS
+  SIGNIN_USER_SUCCESS
 } from "constants/ActionTypes";
 
 const INIT_STATE = {
@@ -14,39 +12,22 @@ const INIT_STATE = {
   alertMessage: "",
   showMessage: false,
   initURL: "",
-  authUser: localStorage.getItem("user_id"),
-  userName: localStorage.getItem("user_name")
+  authUser: null
 };
 
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
-    case SIGNUP_USER_SUCCESS: {
-      return {
-        ...state,
-        loader: false,
-        authUser: action.payload
-      };
-    }
     case SIGNIN_USER_SUCCESS: {
       return {
         ...state,
         loader: false,
-        authUser: action.payload.token,
-        userName: action.payload.name
+        authUser: action.payload.token
       };
     }
     case INIT_URL: {
       return {
         ...state,
         initURL: action.payload
-      };
-    }
-    case SIGNOUT_USER_SUCCESS: {
-      return {
-        ...state,
-        authUser: null,
-        initURL: "",
-        loader: false
       };
     }
 

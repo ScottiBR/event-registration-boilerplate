@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { DatePicker } from "material-ui-pickers";
+import moment from "moment";
 import {
   NotificationContainer,
   NotificationManager
@@ -24,7 +26,8 @@ class SignIn extends React.Component {
     super();
     this.state = {
       login: "",
-      password: ""
+      password: "",
+      selectedDate: "2017-05-24"
     };
   }
 
@@ -38,6 +41,8 @@ class SignIn extends React.Component {
       this.props.history.push("/");
     }
   }
+  handleDateChange = event =>
+    this.setState({ selectedDate: event.target.value });
   handleLoginValue = event => this.setState({ login: event.target.value });
   handlePasswordValue = event =>
     this.setState({ password: event.target.value });
@@ -55,7 +60,7 @@ class SignIn extends React.Component {
   };
 
   render() {
-    const { login, password } = this.state;
+    const { login, password, selectedDate } = this.state;
     const { showMessage, loader, alertMessage } = this.props;
     return (
       <div className="app-login-container d-flex justify-content-center align-items-center animated slideInUpTiny animation-duration-3">
@@ -81,7 +86,7 @@ class SignIn extends React.Component {
               <form>
                 <fieldset>
                   <TextField
-                    label={<IntlMessages id="signIn.user" />}
+                    label={<IntlMessages id="appModule.cpf" />}
                     fullWidth
                     onChange={this.handleLoginValue}
                     defaultValue={login}
@@ -100,6 +105,16 @@ class SignIn extends React.Component {
                     margin="normal"
                     className="mt-1 my-sm-3"
                   />
+                  <TextField
+                    label={<IntlMessages id="appModule.birthday" />}
+                    type="date"
+                    fullWidth
+                    onChange={this.handleDateChange}
+                    defaultValue={selectedDate}
+                    onKeyPress={this.handleKeyPress}
+                    margin="normal"
+                    className="mt-1 my-sm-3"
+                  />
 
                   <div className="mb-3 d-flex align-items-center justify-content-center">
                     <Button
@@ -109,6 +124,14 @@ class SignIn extends React.Component {
                     >
                       <IntlMessages id="appModule.signin" />
                     </Button>
+                    <div>
+                      <Link
+                        to="/app/app-module/forgot-password-1"
+                        title="Reset Password"
+                      >
+                        <IntlMessages id="appModule.forgotPassword" />
+                      </Link>
+                    </div>
                   </div>
                 </fieldset>
               </form>
