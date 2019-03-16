@@ -1,0 +1,21 @@
+{
+  "sidebar.main": "Menu",
+  "extraPages.404Msg": "Página não encontrada! Em caso de dúvidas entre em contato com o desenvolvedor =D",
+  "extraPages.GoHome": "Página Inicial",
+  "pages.samplePage": "Start",
+
+  "appModule.password": "Senha",
+  "appModule.email": "Email",
+  "appModule.name": "Nome",
+  "appModule.phone": "Celular",
+  "signIn": "Gestor",
+  "signIn.success": "Login realizado com sucesso!",
+  "signIn.error": "Login ou senha incorretos",
+  "signIn.signUp": "Crie uma conta",
+  "signIn.connectWith": "Ou contecte-se com",
+  "signIn.login": "Login",
+  "signIn.user": "Usuário",
+  "appModule.signin": "Entrar",
+  "popup.logout": "Sair",
+  "sidebar.lists": "Listas"
+}
