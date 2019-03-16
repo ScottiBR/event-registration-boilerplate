@@ -8,7 +8,6 @@
 
 # production
 /build
-/src/constants
 # misc
 .DS_Store
 .env.local
