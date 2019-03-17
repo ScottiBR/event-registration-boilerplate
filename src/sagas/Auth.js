@@ -1,8 +1,16 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
-import { SIGNIN_USER, SIGNOUT_USER } from "constants/ActionTypes";
+import {
+  SIGNIN_USER,
+  SIGNIN_CHECK_CPF_REGISTRATION_REQUEST,
+  SIGNIN_USER_WITH_BDAY
+} from "constants/ActionTypes";
 import { BASE_URL } from "constants/Environment";
-import { showAuthMessage, userSignInSuccess } from "actions/Auth";
+import {
+  showAuthMessage,
+  userSignInSuccess,
+  checkCpfRegistrationRecieve
+} from "actions/Auth";
 
 const signInUserWithLoginPasswordRequest = async userCredentials => {
   return { token: 123, name: "sdsda" };
@@ -17,15 +25,43 @@ const signInUserWithLoginPasswordRequest = async userCredentials => {
   return await responseFromServer.json();
 };
 
+const signInUserWithBirthDayRequest = async userCredentials => {
+  return { token: 123, name: "sdsda" };
+};
+const checkCpfAlreadyRegistredRequest = async userCredentials => {
+  return null;
+};
 function* signInUserWithLoginPassword({ payload }) {
   try {
     const user = yield call(signInUserWithLoginPasswordRequest, payload);
     if (user.error) {
       yield put(showAuthMessage(user.error));
     } else {
-      //localStorage.setItem("user_id", user.token);
-      //localStorage.setItem("user_name", user.name);
-      yield put(userSignInSuccess(user));
+      yield put(userSignInSuccess(user.cpf));
+    }
+  } catch (err) {
+    yield put(showAuthMessage(err));
+  }
+}
+function* signInUserWithBirthDay({ payload }) {
+  try {
+    const user = yield call(signInUserWithBirthDayRequest, payload);
+    if (user.error) {
+      yield put(showAuthMessage(user.error));
+    } else {
+      yield put(userSignInSuccess(user.cpf));
+    }
+  } catch (err) {
+    yield put(showAuthMessage(err));
+  }
+}
+function* checkCpfAlreadyRegistred({ payload }) {
+  try {
+    const registrationID = yield call(checkCpfAlreadyRegistredRequest, payload);
+    if (registrationID === null) {
+      yield put(userSignInSuccess(payload.cpf));
+    } else {
+      yield put(checkCpfRegistrationRecieve(registrationID));
     }
   } catch (err) {
     yield put(showAuthMessage(err));
@@ -35,7 +71,19 @@ function* signInUserWithLoginPassword({ payload }) {
 export function* signInUser() {
   yield takeEvery(SIGNIN_USER, signInUserWithLoginPassword);
 }
-
+export function* signInUserWithBDay() {
+  yield takeEvery(SIGNIN_USER_WITH_BDAY, signInUserWithBirthDay);
+}
+export function* checkCpfRegistration() {
+  yield takeEvery(
+    SIGNIN_CHECK_CPF_REGISTRATION_REQUEST,
+    checkCpfAlreadyRegistred
+  );
+}
 export default function* rootSaga() {
-  yield all([fork(signInUser)]);
+  yield all([
+    fork(signInUser),
+    fork(signInUserWithBDay),
+    fork(checkCpfRegistration)
+  ]);
 }

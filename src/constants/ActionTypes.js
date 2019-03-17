@@ -59,8 +59,12 @@ export const SIGNIN_USER_SUCCESS = "signin_user_success";
 export const SIGNOUT_USER = "signout_user";
 export const SIGNOUT_USER_SUCCESS = "signout_user_success";
 export const INIT_URL = "init_url";
-export const SIGNIN_SET_CPF = "sigin_set_cpf";
-
+export const SIGNIN_SET_CPF = "signin_set_cpf";
+export const SIGNIN_USER_WITH_BDAY = "signin_with_bday";
+export const SIGNIN_CHECK_CPF_REGISTRATION_REQUEST =
+  "signin_check_cpf_registration";
+export const SIGNIN_CHECK_CPF_REGISTRATION_RECIEVE =
+  "signin_check_cpf_registration_success";
 // Chat Module const
 
 export const FETCH_ALL_CHAT_USER = "fetch_all_chat_user";

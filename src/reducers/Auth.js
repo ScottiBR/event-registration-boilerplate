@@ -5,7 +5,8 @@ import {
   ON_SHOW_LOADER,
   SHOW_MESSAGE,
   SIGNIN_USER_SUCCESS,
-  SIGNIN_SET_CPF
+  SIGNIN_SET_CPF,
+  SIGNIN_CHECK_CPF_REGISTRATION_RECIEVE
 } from "constants/ActionTypes";
 
 const INIT_STATE = {
@@ -26,11 +27,18 @@ export default (state = INIT_STATE, action) => {
         cpf: action.payload
       };
     }
+    case SIGNIN_CHECK_CPF_REGISTRATION_RECIEVE: {
+      return {
+        ...state,
+        loader: false,
+        registrationID: action.payload
+      };
+    }
     case SIGNIN_USER_SUCCESS: {
       return {
         ...state,
         loader: false,
-        authUser: action.payload.token
+        authUser: action.payload
       };
     }
     case INIT_URL: {

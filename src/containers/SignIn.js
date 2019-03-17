@@ -5,7 +5,6 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import formatCpf from "@brazilian-utils/format-cpf";
 import isValidCpf from "@brazilian-utils/is-valid-cpf";
-import { DatePicker } from "material-ui-pickers";
 import moment from "moment";
 import {
   NotificationContainer,
@@ -18,7 +17,9 @@ import {
   showAuthLoader,
   userSignIn,
   setCPF,
-  showAuthMessage
+  showAuthMessage,
+  checkCpfRegistrationRequest,
+  userSignInWithBDay
 } from "actions/Auth";
 
 class SignIn extends React.Component {
@@ -26,7 +27,8 @@ class SignIn extends React.Component {
     super();
     this.state = {
       password: "",
-      selectedDate: "2017-05-24"
+      forgotPassword: false,
+      birthDay: ""
     };
   }
 
@@ -40,9 +42,10 @@ class SignIn extends React.Component {
       this.props.history.push("/");
     }
   }
-  handleDateChange = event =>
-    this.setState({ selectedDate: event.target.value });
-
+  handleDateChange = event => {
+    const dateFormated = moment(event.target.value);
+    this.setState({ birthDay: dateFormated });
+  };
   handleCpfValue = event => {
     const cpfValue = event.target.value.replace(/[^\d]+/g, "");
     this.props.setCPF(parseFloat(cpfValue));
@@ -50,27 +53,37 @@ class SignIn extends React.Component {
   handlePasswordValue = event =>
     this.setState({ password: event.target.value });
 
+  handleForgotPassword = () => this.setState({ forgotPassword: true });
+
   handleKeyPress = event => {
     if (event.key === "Enter") {
-      this.handleSignInValidation();
+      this.handleSignInValidation(event);
     }
   };
 
-  handleSignIn = () => {
-    const { login, password } = this.state;
-    this.props.showAuthLoader();
-    this.props.userSignIn({ login, password });
-  };
-
-  handleSignInValidation = () => {
-    const { selectedDate, password } = this.state;
+  handleSignInValidation = e => {
+    const { birthDay, password, forgotPassword } = this.state;
     const { cpf, registrationID } = this.props;
-    if (!isValidCpf(cpf)) {
+    if (isValidCpf(cpf)) {
+      this.props.showAuthLoader();
+      if (registrationID === null) {
+        this.props.checkCpfRegistrationRequest(cpf);
+      } else if (!forgotPassword) {
+        this.props.userSignIn({ cpf, password });
+      } else {
+        if (birthDay.year() > 1900 && birthDay.year() <= 2017) {
+          this.props.userSignInWithBDay({ registrationID, birthDay });
+        } else {
+          this.props.showAuthMessage("Data de Nascimento Incorreta");
+        }
+      }
+    } else {
       this.props.showAuthMessage("CPF INVALIDO");
     }
+    e.preventDefault();
   };
   render() {
-    const { password, selectedDate } = this.state;
+    const { password, birthDay, forgotPassword } = this.state;
     const {
       showMessage,
       loader,
@@ -109,31 +122,40 @@ class SignIn extends React.Component {
                     onKeyPress={this.handleKeyPress}
                     margin="normal"
                     disabled={registrationID !== null}
-                    autoFocus={true}
+                    autoFocus={!forgotPassword}
                     className="mt-1 my-sm-3"
                   />
-                  <TextField
-                    type="password"
-                    label={<IntlMessages id="appModule.password" />}
-                    fullWidth
-                    onChange={this.handlePasswordValue}
-                    defaultValue={password}
-                    onKeyPress={this.handleKeyPress}
-                    margin="normal"
-                    className="mt-1 my-sm-3"
-                  />
-                  <TextField
-                    label={<IntlMessages id="appModule.birthday" />}
-                    type="date"
-                    fullWidth
-                    onChange={this.handleDateChange}
-                    defaultValue={selectedDate}
-                    onKeyPress={this.handleKeyPress}
-                    margin="normal"
-                    className="mt-1 my-sm-3"
-                  />
+                  {registrationID && (
+                    <div>
+                      {!forgotPassword ? (
+                        <TextField
+                          type="password"
+                          label={<IntlMessages id="appModule.password" />}
+                          fullWidth
+                          onChange={this.handlePasswordValue}
+                          defaultValue={password}
+                          onKeyPress={this.handleKeyPress}
+                          margin="normal"
+                          className="mt-1 my-sm-3"
+                        />
+                      ) : (
+                        <label>
+                          <IntlMessages id="appModule.birthday" />
+                          <TextField
+                            type="date"
+                            fullWidth
+                            onChange={this.handleDateChange}
+                            defaultValue={birthDay}
+                            onKeyPress={this.handleKeyPress}
+                            margin="normal"
+                            className="mt-1 my-sm-3"
+                          />
+                        </label>
+                      )}
+                    </div>
+                  )}
 
-                  <div className="mb-3 d-flex flex-column align-items-center justify-content-center">
+                  <div className="m-3 d-flex flex-column align-items-center justify-content-center">
                     <Button
                       onClick={this.handleSignInValidation}
                       variant="contained"
@@ -141,14 +163,16 @@ class SignIn extends React.Component {
                     >
                       <IntlMessages id="appModule.signin" />
                     </Button>
-                    <div>
-                      <Link
-                        to="/app/app-module/forgot-password-1"
-                        title="Reset Password"
-                      >
-                        <IntlMessages id="appModule.forgotPassword" />
-                      </Link>
-                    </div>
+                    {registrationID && !forgotPassword && (
+                      <div>
+                        <p
+                          className=" mt-3 text-light-grey"
+                          onClick={this.handleForgotPassword}
+                        >
+                          <IntlMessages id="appModule.forgotPassword" />
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </fieldset>
               </form>
@@ -186,6 +210,8 @@ export default connect(
     hideMessage,
     showAuthLoader,
     setCPF,
-    showAuthMessage
+    showAuthMessage,
+    checkCpfRegistrationRequest,
+    userSignInWithBDay
   }
 )(SignIn);
