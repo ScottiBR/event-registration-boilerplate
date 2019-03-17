@@ -11,7 +11,6 @@ import AppLocale from "../lngProvider";
 
 import MainApp from "app/index";
 import SignIn from "./SignIn";
-import Registration from "./Registration";
 import { setInitUrl } from "../actions/Auth";
 import RTL from "util/RTL";
 import asyncComponent from "util/asyncComponent";
@@ -55,10 +54,8 @@ class App extends Component {
     if (location.pathname === "/") {
       if (authUser === null) {
         return <Redirect to={"/signin"} />;
-      } else if (registrationID === null) {
-        return <Redirect to={"/registration"} />;
       } else if (initURL === "" || initURL === "/" || initURL === "/signin") {
-        return <Redirect to={"/app/start"} />;
+        return <Redirect to={"/app/enrollment"} />;
       } else {
         return <Redirect to={initURL} />;
       }
@@ -91,7 +88,6 @@ class App extends Component {
                     component={MainApp}
                   />
                   <Route path="/signin" component={SignIn} />
-                  <Route path="/registration" component={Registration} />
                   <Route
                     component={asyncComponent(() =>
                       import("components/Error404")

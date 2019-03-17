@@ -139,7 +139,7 @@ class SignIn extends React.Component {
                           className="mt-1 my-sm-3"
                         />
                       ) : (
-                        <label>
+                        <label className="text-light-grey">
                           <IntlMessages id="appModule.birthday" />
                           <TextField
                             type="date"
@@ -161,7 +161,7 @@ class SignIn extends React.Component {
                       variant="contained"
                       color="secondary"
                     >
-                      <IntlMessages id="appModule.signin" />
+                      <IntlMessages id="appModule.next" />
                     </Button>
                     {registrationID && !forgotPassword && (
                       <div>

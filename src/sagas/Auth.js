@@ -9,11 +9,12 @@ import { BASE_URL } from "constants/Environment";
 import {
   showAuthMessage,
   userSignInSuccess,
-  checkCpfRegistrationRecieve
+  checkCpfRegistrationRecieve,
+  setInitUrl
 } from "actions/Auth";
 
 const signInUserWithLoginPasswordRequest = async userCredentials => {
-  return { token: 123, name: "sdsda" };
+  return { cpf: 123, name: "sdsda" };
   const responseFromServer = await fetch(`${BASE_URL}/api/auth/validateLogin`, {
     method: "POST",
     headers: {
@@ -26,7 +27,7 @@ const signInUserWithLoginPasswordRequest = async userCredentials => {
 };
 
 const signInUserWithBirthDayRequest = async userCredentials => {
-  return { token: 123, name: "sdsda" };
+  return { cpf: 123, name: "sdsda" };
 };
 const checkCpfAlreadyRegistredRequest = async userCredentials => {
   return null;
@@ -49,6 +50,7 @@ function* signInUserWithBirthDay({ payload }) {
     if (user.error) {
       yield put(showAuthMessage(user.error));
     } else {
+      yield put(setInitUrl(""));
       yield put(userSignInSuccess(user.cpf));
     }
   } catch (err) {
@@ -59,7 +61,8 @@ function* checkCpfAlreadyRegistred({ payload }) {
   try {
     const registrationID = yield call(checkCpfAlreadyRegistredRequest, payload);
     if (registrationID === null) {
-      yield put(userSignInSuccess(payload.cpf));
+      yield put(setInitUrl("/app/registration"));
+      yield put(userSignInSuccess(payload));
     } else {
       yield put(checkCpfRegistrationRecieve(registrationID));
     }

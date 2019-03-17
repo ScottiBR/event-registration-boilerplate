@@ -13,9 +13,9 @@ const INIT_STATE = {
   loader: false,
   alertMessage: "",
   showMessage: false,
-  initURL: "",
-  authUser: null,
-  cpf: null,
+  initURL: "/app/registration",
+  authUser: 123,
+  cpf: "12042796670",
   registrationID: null
 };
 

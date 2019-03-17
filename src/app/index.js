@@ -51,12 +51,17 @@ class App extends React.Component {
             <div className="app-main-content">
               <Switch>
                 <Route
-                  path={`${match.url}/start`}
+                  path={`${match.url}/enrollment`}
                   component={asyncComponent(() =>
                     import("./routes/SamplePage/index")
                   )}
                 />
-
+                <Route
+                  path={`${match.url}/registration`}
+                  component={asyncComponent(() =>
+                    import("./routes/Registration/index")
+                  )}
+                />
                 <Route
                   component={asyncComponent(() =>
                     import("components/Error404")
