@@ -30,7 +30,7 @@ const signInUserWithBirthDayRequest = async userCredentials => {
   return { cpf: 123, name: "sdsda" };
 };
 const checkCpfAlreadyRegistredRequest = async userCredentials => {
-  return null;
+  return 123;
 };
 function* signInUserWithLoginPassword({ payload }) {
   try {
@@ -50,7 +50,6 @@ function* signInUserWithBirthDay({ payload }) {
     if (user.error) {
       yield put(showAuthMessage(user.error));
     } else {
-      yield put(setInitUrl(""));
       yield put(userSignInSuccess(user.cpf));
     }
   } catch (err) {
@@ -61,7 +60,6 @@ function* checkCpfAlreadyRegistred({ payload }) {
   try {
     const registrationID = yield call(checkCpfAlreadyRegistredRequest, payload);
     if (registrationID === null) {
-      yield put(setInitUrl("/app/registration"));
       yield put(userSignInSuccess(payload));
     } else {
       yield put(checkCpfRegistrationRecieve(registrationID));

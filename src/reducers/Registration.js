@@ -47,13 +47,13 @@ export default (state = INIT_STATE, action) => {
     case POPULATE_JOBS_SELECT_RECIEVE: {
       return {
         ...state,
-        jobs: [action.payload]
+        jobs: action.payload
       };
     }
     case POPULATE_CITIES_SELECT_RECIEVE: {
       return {
         ...state,
-        cities: [action.payload]
+        cities: action.payload
       };
     }
 

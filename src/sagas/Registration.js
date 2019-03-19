@@ -10,7 +10,8 @@ import {
   checkCpfRegistrationRecieve,
   populateCitiesSelectRecieve,
   populateJobsSelectRecieve,
-  showRegistrationMessage
+  showRegistrationMessage,
+  setInitUrl
 } from "actions";
 
 const postRegistrationFormRequest = async form => {
@@ -18,10 +19,10 @@ const postRegistrationFormRequest = async form => {
 };
 
 const getJobsRequest = async () => {
-  return { id: 1, name: "PREFEITO(A)" }, { id: 2, name: "VICE-PREFEITO(A)" };
+  return [{ id: 1, name: "PREFEITO(A)" }, { id: 2, name: "VICE-PREFEITO(A)" }];
 };
 const getCitiesRequest = async () => {
-  return { id: 0, name: "Selecione" }, { id: 1, name: "ABADIA DOS DOURADOS" };
+  return [{ id: 0, name: "Selecione" }, { id: 1, name: "ABADIA DOS DOURADOS" }];
 };
 function* postRegistrationForm({ payload }) {
   try {
