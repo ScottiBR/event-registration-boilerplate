@@ -144,47 +144,12 @@ export const SET_CURRENT_TODO_NULL = "set_current_todo_null";
 export const REMOVE_LABEL = "remove_label";
 export const UPDATE_SEARCH = "update_search";
 
-// City module constants
-export const CITY_FOUNDED = "city_founded";
-export const REQUEST_API_CITYHALL = "request_api_cityhall";
-export const RECEIVE_API_CITYHALL = "receive_api_cityhall";
-export const REQUEST_API_MAYOR = "request_api_mayor";
-export const RECEIVE_API_MAYOR = "receive_api_mayor";
-export const REQUEST_API_EXTERNAL_EVENTS = "request_api_externalEvents";
-export const RECEIVE_API_EXTERNAL_EVENTS = "receive_api_externalEvents";
-export const REQUEST_API_CERTIFICATES_ISSUED = "request_api_certificatesIssued";
-export const RECEIVE_API_CERTIFICATES_ISSUED = "receive_api_certificatesIssued";
-export const REQUEST_API_CUSTOMER_SERVICES_REALIZED =
-  "request_api_servicesRealized";
-export const RECEIVE_API_CUSTOMER_SERVICES_REALIZED =
-  "receive_api_servicesRealized";
-
-export const TYPE_HOME = "P";
-export const TYPE_MAIL = "E";
-export const TYPE_PHONE = "T";
-
-// Lists module constants
-export const REQUEST_API_SAMU = "request_api_samu";
-export const RECEIVE_API_SAMU = "receive_api_samu";
-export const REQUEST_API_MICROREGION = "request_api_microregion";
-export const RECEIVE_API_MICROREGION = "receive_api_microregion";
-export const REQUEST_API_SENATORS = "request_api_senators";
-export const RECEIVE_API_SENATORS = "receive_api_senators";
-export const REQUEST_API_CONGRESSMAN = "request_api_congressman";
-export const RECEIVE_API_CONGRESSMAN = "receive_api_congressman";
-export const REQUEST_API_STATE_CONGRESSMAN = "request_api_stateCongressman";
-export const RECEIVE_API_STATE_CONGRESSMAN = "receive_api_stateCongressman";
-export const REQUEST_API_PRESIDENT = "request_api_president";
-export const RECEIVE_API_PRESIDENT = "receive_api_president";
-export const REQUEST_API_SECRETARY = "request_api_secretary";
-export const RECEIVE_API_SECRETARY = "receive_api_secretary";
-export const REQUEST_API_EVENTS_BY_ID = "request_api_eventsById";
-export const RECEIVE_API_EVENTS_BY_ID = "receive_api_eventsById";
-
-// comission module constants
-export const REQUEST_API_COMISSION = "request_api_comission";
-export const RECEIVE_API_COMISSION = "receive_api_comission";
-export const REQUEST_API_COMISSION_MEMBERS = "request_api_comission_members";
-export const RECEIVE_API_COMISSION_MEMBERS = "receive_api_comission_members";
-export const REQUEST_API_COMISSION_PROJECTS = "request_api_comission_projects";
-export const RECEIVE_API_COMISSION_PROJECTS = "receive_api_comission_projects";
+// Registration constants
+export const HANDLE_VALUE_CHANGE = "handle_value_change";
+export const SHOW_REGISTRATION_MESSAGE = "show_registration_message";
+export const HIDE_REGISTRATION_MESSAGE = "hide_registration_message";
+export const POPULATE_CITIES_SELECT_RECIEVE = "populate_cities_select_recieve";
+export const POPULATE_CITIES_SELECT_REQUEST = "populate_cities_select_request";
+export const POPULATE_JOBS_SELECT_RECIEVE = "populate_jobs_select_recieve";
+export const POPULATE_JOBS_SELECT_REQUEST = "populate_jobs_select_request";
+export const SUBMIT_REGISTRATION_FORM = "submit_registration_form";

@@ -3,15 +3,21 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
+import {
+  handleChangeValue,
+  showRegistrationMessage,
+  hideRegistrationMessage,
+  populateCitiesSelect,
+  populateJobsSelect,
+  submitRegistrationForm
+} from "actions/Registration";
 import { connect } from "react-redux";
 import IntlMessages from "util/IntlMessages";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import Input from "@material-ui/core/Input";
 import Select from "@material-ui/core/Select";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import CardBox from "../../../components/CardBox";
+import CardBox from "components/CardBox";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import formatCpf from "@brazilian-utils/format-cpf";
@@ -22,63 +28,31 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
-import moment from "moment";
+
 class Registration extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      name: "",
-      jobId: "",
-      phone: "",
-      email: "",
-      password: "",
-      birthDay: "",
-      showMessage: false,
-      alertMessage: "",
-      jobs: [{ id: 1, name: "Prefeito" }, { id: 2, name: "Vereador" }],
-      cities: [
-        { id: 0, name: "Selecione" },
-        { id: 1, name: "ABADIA DOS DOURADOS" },
-        { id: 2, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 3, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 4, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 5, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 6, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 7, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 8, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 9, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 14, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 15, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 16, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 17, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 18, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 22, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 23, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 24, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 25, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 26, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 27, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 28, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" },
-        { id: 29, name: "SANTO ANTONIO DO MATO DENTRO DE CIMA" }
-      ],
-      company: "",
-      companyType: "P"
-    };
+  componentDidUpdate() {
+    if (this.props.showMessage) {
+      setTimeout(() => {
+        this.props.hideRegistrationMessage();
+      }, 100);
+    }
+  }
+  componentDidMount() {
+    this.props.populateCitiesSelect();
+    this.props.populateJobsSelect();
   }
   handleChange = name => e => {
-    this.setState({ [name]: e.target.value });
+    this.props.handleChangeValue(name, e.target.value);
   };
   handleChangeUpperCase = name => e => {
     const valueUpper = e.target.value.toUpperCase();
-    this.setState({ [name]: valueUpper });
+    this.props.handleChangeValue(name, valueUpper);
   };
-  handleCompany = e => this.setState({ company: e.target.value });
-  handlePhone = e => {
-    const phone = e.target.value.replace(/[^\d]/g, "");
-    this.setState({ phone });
+  handleChangeOnlyNumbers = name => e => {
+    const numberValue = e.target.value.replace(/[^\d]/g, "");
+    this.props.handleChangeValue(name, numberValue);
   };
-  handleEmail = e => this.setState({ email: e.target.value });
-  handleBDay = e => this.setState({ birthDay: e.target.value });
+
   handleRegistrationValidation = () => {
     const {
       name,
@@ -88,10 +62,8 @@ class Registration extends React.Component {
       email,
       password,
       birthDay,
-      companyType,
-      showMessage,
-      alertMessage
-    } = this.state;
+      companyType
+    } = this.props;
     if (
       !name ||
       !jobId ||
@@ -102,24 +74,27 @@ class Registration extends React.Component {
       !birthDay ||
       !companyType
     ) {
-      this.setState({
-        showMessage: true,
-        alertMessage: `Preencha Todos os campos`
-      });
+      this.props.showRegistrationMessage(`Preencha Todos os campos`);
     } else if (!isValidPhone(phone)) {
-      this.setState({
-        showMessage: true,
-        alertMessage: `Celular: ${phone} incorreto`
-      });
+      this.props.showRegistrationMessage(`Celular: ${phone} incorreto`);
     } else if (!validateEmail.validate(email)) {
-      this.setState({
-        showMessage: true,
-        alertMessage: `Email: com caracteres inválidos`
+      this.props.showRegistrationMessage(`Email com caracteres inválidos`);
+    } else {
+      this.props.submitRegistrationForm({
+        name,
+        jobId,
+        company,
+        phone,
+        email,
+        password,
+        birthDay,
+        companyType
       });
     }
   };
   render() {
     const {
+      cpf,
       name,
       jobId,
       company,
@@ -132,8 +107,7 @@ class Registration extends React.Component {
       jobs,
       cities,
       companyType
-    } = this.state;
-    const { cpf } = this.props;
+    } = this.props;
     return (
       <div className="app-wrapper">
         <div className="d-flex justify-content-center">
@@ -163,24 +137,21 @@ class Registration extends React.Component {
                   margin="normal"
                   className="mt-1 my-sm-3"
                 />
-                <label className="text-light-grey">
-                  <IntlMessages id="appModule.birthday" />
-                  <TextField
-                    type="date"
-                    fullWidth
-                    required={true}
-                    onChange={this.handleBDay}
-                    defaultValue={birthDay}
-                    margin="normal"
-                    className="mt-1 my-sm-3"
-                  />
-                </label>
+                <TextField
+                  label={<IntlMessages id="appModule.birthday" />}
+                  fullWidth
+                  required={true}
+                  onChange={this.handleChangeOnlyNumbers("birthDay")}
+                  value={formatStringByPattern("99/99/9999", birthDay)}
+                  margin="normal"
+                  className="mt-1 my-sm-3"
+                />
                 <TextField
                   label={<IntlMessages id="appModule.phone" />}
                   fullWidth
                   type="tel"
                   required={true}
-                  onChange={this.handlePhone}
+                  onChange={this.handleChangeOnlyNumbers("phone")}
                   value={formatStringByPattern("(99) 99999-9999", phone)}
                   margin="normal"
                   className="mt-1 my-sm-3"
@@ -252,13 +223,16 @@ class Registration extends React.Component {
                   />
                 ) : (
                   <FormControl className="w-100 mb-2">
+                    <InputLabel>
+                      <IntlMessages id="appModule.city" />
+                    </InputLabel>
                     <Select
                       required={true}
                       value={company}
                       onChange={this.handleChangeUpperCase("company")}
                     >
                       {cities.map(city => (
-                        <MenuItem key={city.id} value={city.id}>
+                        <MenuItem key={city.id} value={city.name}>
                           {city.name}
                         </MenuItem>
                       ))}
@@ -295,9 +269,47 @@ class Registration extends React.Component {
     );
   }
 }
-const mapStateToProps = ({ auth }) => {
+const mapStateToProps = ({ auth, registration }) => {
   const { cpf } = auth;
-  return { cpf };
+  const {
+    name,
+    jobId,
+    company,
+    phone,
+    email,
+    password,
+    birthDay,
+    companyType,
+    showMessage,
+    alertMessage,
+    jobs,
+    cities
+  } = registration;
+  return {
+    cpf,
+    name,
+    jobId,
+    company,
+    phone,
+    email,
+    password,
+    birthDay,
+    companyType,
+    showMessage,
+    alertMessage,
+    jobs,
+    cities
+  };
 };
 
-export default connect(mapStateToProps)(Registration);
+export default connect(
+  mapStateToProps,
+  {
+    handleChangeValue,
+    showRegistrationMessage,
+    hideRegistrationMessage,
+    populateCitiesSelect,
+    populateJobsSelect,
+    submitRegistrationForm
+  }
+)(Registration);

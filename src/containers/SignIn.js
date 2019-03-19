@@ -11,6 +11,8 @@ import {
   NotificationManager
 } from "react-notifications";
 import IntlMessages from "util/IntlMessages";
+
+import formatStringByPattern from "format-string-by-pattern";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {
   hideMessage,
@@ -139,18 +141,15 @@ class SignIn extends React.Component {
                           className="mt-1 my-sm-3"
                         />
                       ) : (
-                        <label className="text-light-grey">
-                          <IntlMessages id="appModule.birthday" />
-                          <TextField
-                            type="date"
-                            fullWidth
-                            onChange={this.handleDateChange}
-                            defaultValue={birthDay}
-                            onKeyPress={this.handleKeyPress}
-                            margin="normal"
-                            className="mt-1 my-sm-3"
-                          />
-                        </label>
+                        <TextField
+                          label={<IntlMessages id="appModule.birthday" />}
+                          fullWidth
+                          required={true}
+                          onChange={this.handleDateChange}
+                          value={formatStringByPattern("99/99/9999", birthDay)}
+                          margin="normal"
+                          className="mt-1 my-sm-3"
+                        />
                       )}
                     </div>
                   )}
