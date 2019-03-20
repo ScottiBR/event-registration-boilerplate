@@ -53,7 +53,7 @@ class App extends React.Component {
                 <Route
                   path={`${match.url}/enrollment`}
                   component={asyncComponent(() =>
-                    import("./routes/SamplePage/index")
+                    import("./routes/Enrollment/index")
                   )}
                 />
                 <Route

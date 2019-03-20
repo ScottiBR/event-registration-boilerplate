@@ -153,3 +153,18 @@ export const POPULATE_CITIES_SELECT_REQUEST = "populate_cities_select_request";
 export const POPULATE_JOBS_SELECT_RECIEVE = "populate_jobs_select_recieve";
 export const POPULATE_JOBS_SELECT_REQUEST = "populate_jobs_select_request";
 export const SUBMIT_REGISTRATION_FORM = "submit_registration_form";
+
+//Enrollment Constants
+export const SHOW_ENROLLMENT_MESSAGE = "show_enrollment_message";
+export const HIDE_ENROLLMENT_MESSAGE = "hide_enrollment_message";
+
+export const REQUEST_API_GET_ALL_AREAS = "request_api_get_all_areas";
+export const RECIEVE_API_GET_ALL_AREAS = "recieve_api_get_all_areas";
+export const REQUEST_API_GET_LECTURES = "request_api_get_lectures";
+export const RECIEVE_API_GET_LECTURES = "recieve_api_get_lectures";
+export const REQUEST_API_SUBSCRIBE_LECTURE = "request_api_subscribe_lecture";
+export const RECIEVE_API_SUBSCRIBE_LECTURE = "recieve_api_subscribe_lecture";
+export const REQUEST_API_UNSUBSCRIBE_LECTURE =
+  "request_api_unsubscribe_lecture";
+export const RECIEVE_API_UNSUBSCRIBE_LECTURE =
+  "recieve_api_unsubscribe_lecture";

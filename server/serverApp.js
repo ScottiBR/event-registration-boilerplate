@@ -15,11 +15,6 @@ app.use(cookieParser());
 app.use(express.static(buildPath));
 app.use(connectionMiddleware(pool));
 
-require("./server/routes/auth")(app);
-require("./server/routes/city")(app);
-require("./server/routes/lists")(app);
-require("./server/routes/comission")(app);
-
 //default redirection for React SPA Routed Apllication
 app.get("*", (req, res) => {
   res.sendFile(path.join(buildPath, "index.html"));

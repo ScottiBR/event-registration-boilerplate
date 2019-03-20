@@ -115,7 +115,6 @@ class Registration extends React.Component {
             styleName="col-lg-5 col-md-7"
             childrenStyle="d-flex flex-column justify-content-start"
             heading={<IntlMessages id="pages.registration" />}
-            headerOutside
           >
             <form>
               <fieldset>
