@@ -28,7 +28,8 @@ class Enrollment extends React.Component {
     this.state = {
       textFilter: "",
       dateFilter: "",
-      areaFilter: ""
+      areaFilter: "",
+      searchLecturesOption: false
     };
   }
   componentDidUpdate() {
@@ -39,8 +40,8 @@ class Enrollment extends React.Component {
     }
   }
   componentDidMount() {
-    this.props.requestApiGetLectures(this.props.registrationID);
-    this.props.requestApiGetAllAreas();
+    //this.props.requestApiGetLectures(this.props.registrationID);
+    //this.props.requestApiGetAllAreas();
   }
 
   handleChange = name => e => {
@@ -61,6 +62,9 @@ class Enrollment extends React.Component {
   handleUnsubscribe = lectureId => {
     this.props.requestApiPostUnsubscribe(lectureId, this.props.registrationId);
   };
+  searcHlectures = () => {
+    this.setState({ searchLecturesOption: true });
+  };
   validateEnrollment = () => {
     this.props.showEnrollmentMessage("Comprovante de Inscrição");
   };
@@ -78,73 +82,109 @@ class Enrollment extends React.Component {
     );
     return (
       <div className="app-wrapper">
-        <div className="d-flex flex-row align-items-start justify-content-center flex-wrap ">
-          <CardBox
-            styleName="col-lg-8 col-md-8  col-sm-12"
-            childrenStyle="d-flex flex-column justify-content-start"
-            heading={<IntlMessages id="pages.enrollment.filter" />}
-          >
-            <LecturesFilter
-              handleChange={this.handleChange}
-              fields={{ ...this.state, areasList }}
-            />
-          </CardBox>
+        {this.state.searchLecturesOption ? (
+          <div className="d-flex flex-row align-items-start justify-content-center flex-wrap ">
+            <CardBox
+              styleName="col-lg-12 col-md-12  col-sm-12"
+              childrenStyle="d-flex flex-column justify-content-start"
+              heading={<IntlMessages id="pages.enrollment.filter" />}
+            >
+              <LecturesFilter
+                handleChange={this.handleChange}
+                fields={{ ...this.state, areasList }}
+              />
+            </CardBox>
 
-          <CardBox
-            styleName="col-lg-6 col-md-6  col-sm-12"
-            childrenStyle="d-flex flex-column justify-content-start align-items-center"
-            heading={<IntlMessages id="pages.enrollment" />}
-          >
-            {subscribedLectures.length > 0 ? (
+            <CardBox
+              styleName="col-lg-6 col-md-6  col-sm-12"
+              childrenStyle="d-flex flex-column justify-content-start align-items-center"
+              heading={<IntlMessages id="pages.enrollment" />}
+            >
+              {subscribedLectures.length > 0 ? (
+                <List component="nav">
+                  {subscribedLectures.map(data => (
+                    <ListItem divider classes={{ root: classes.root }}>
+                      <div>
+                        <Lectures
+                          key={data.id}
+                          data={data}
+                          handleSubscribe={this.handleUnsubscribe}
+                        />
+                      </div>
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
+                <h2 className="mt-3">Não há palestras selecionadas</h2>
+              )}
+
+              <div className=" d-flex flex-column align-items-center justify-content-center">
+                <Button
+                  onClick={this.validateEnrollment}
+                  variant="contained"
+                  color="secondary"
+                >
+                  <IntlMessages id="appModule.end" />
+                </Button>
+              </div>
+            </CardBox>
+            <CardBox
+              styleName="col-lg-6 col-md-6  col-sm-12"
+              heading={<IntlMessages id="pages.enrollment.lecture" />}
+            >
               <List component="nav">
-                {subscribedLectures.map(data => (
-                  <ListItem divider classes={{ root: classes.root }}>
-                    <div>
+                {lecturesList
+                  .filter(value => value.subscribed === false)
+                  .filter(this.filterLecturesList)
+                  .map(data => (
+                    <ListItem divider classes={{ root: classes.root }}>
                       <Lectures
                         key={data.id}
                         data={data}
-                        handleSubscribe={this.handleUnsubscribe}
+                        handleSubscribe={this.handleSubscribe}
                       />
-                    </div>
-                  </ListItem>
-                ))}
+                    </ListItem>
+                  ))}
               </List>
-            ) : (
-              <h2 className="mt-3">Não há palestras selecionadas</h2>
-            )}
-
-            <div className=" d-flex flex-column align-items-center justify-content-center">
-              <Button
-                onClick={this.validateEnrollment}
-                variant="contained"
-                color="secondary"
-              >
-                <IntlMessages id="appModule.end" />
-              </Button>
-            </div>
-          </CardBox>
-          <CardBox
-            styleName="col-lg-6 col-md-6  col-sm-12"
-            heading={<IntlMessages id="pages.enrollment.lecture" />}
-          >
-            <List component="nav">
-              {lecturesList
-                .filter(value => value.subscribed === false)
-                .filter(this.filterLecturesList)
-                .map(data => (
-                  <ListItem divider classes={{ root: classes.root }}>
-                    <Lectures
-                      key={data.id}
-                      data={data}
-                      handleSubscribe={this.handleSubscribe}
-                    />
-                  </ListItem>
-                ))}
-            </List>
-          </CardBox>
-          {showMessage && NotificationManager.warning(alertMessage)}
-          <NotificationContainer />
-        </div>
+            </CardBox>
+            {showMessage && NotificationManager.warning(alertMessage)}
+            <NotificationContainer />
+          </div>
+        ) : (
+          <div className="d-flex justify-content-center ">
+            <CardBox
+              styleName="col-lg-6 col-md-8  col-sm-12"
+              childrenStyle="d-flex flex-column justify-content-center"
+            >
+              <div>
+                <h3 className="mb-3">
+                  <IntlMessages id="appModule.acessQuestion" />
+                </h3>
+                <p>
+                  O Acesso ao evento inclui Acesso a feira, palestras magnum no
+                  palco principal prêmio mineiro de boas práticas
+                </p>
+                <div className="d-flex flex-row justify-content-between mb-2 ">
+                  <Button
+                    onClick={this.validateEnrollment}
+                    variant="contained"
+                    color="secondary"
+                  >
+                    <IntlMessages id="appModule.accessEvent" />
+                  </Button>
+                  <Button
+                    onClick={this.searcHlectures}
+                    variant="contained"
+                    color="secondary"
+                  >
+                    <IntlMessages id="appModule.lectureSubscription" />
+                  </Button>
+                </div>
+                <p>*O acesso ao evento não garante vaga em nenhuma palestra</p>
+              </div>
+            </CardBox>
+          </div>
+        )}
       </div>
     );
   }

@@ -9,6 +9,7 @@ import {
 import { BASE_URL } from "constants/Environment";
 import {
   hideEnrollmentMessage,
+  showEnrollmentMessage,
   recieveApiGetAllAreas,
   recieveApiGetLectures,
   recieveApiPostSubscribe,
@@ -32,12 +33,12 @@ function* postUnsubscribeLecture({ payload }) {
   try {
     const unsubscribe = yield call(postUnsubscribeLectureRequest, payload);
     if (unsubscribe.error) {
-      yield put(showRegistrationMessage(semVagas));
+      yield put(showEnrollmentMessage(unsubscribe.error));
     } else {
       yield put(recieveApiPostUnsubscribe(payload.lectureId));
     }
   } catch (err) {
-    yield put(showRegistrationMessage(err));
+    yield put(showEnrollmentMessage(err));
   }
 }
 
@@ -45,12 +46,12 @@ function* postSubscribeLecture({ payload }) {
   try {
     const subscribe = yield call(postSubscribeLectureRequest, payload);
     if (subscribe.error) {
-      yield put(showRegistrationMessage(semVagas));
+      yield put(showEnrollmentMessage(subscribe.error));
     } else {
       yield put(recieveApiPostSubscribe(payload.lectureId));
     }
   } catch (err) {
-    yield put(showRegistrationMessage(err));
+    yield put(showEnrollmentMessage(err));
   }
 }
 function* getLectures({ payload }) {
@@ -58,15 +59,15 @@ function* getLectures({ payload }) {
     const lecturesList = yield call(getLecturesRequest, payload);
     yield put(recieveApiGetLectures(lecturesList));
   } catch (err) {
-    yield put(showRegistrationMessage(err));
+    yield put(showEnrollmentMessage(err));
   }
 }
 function* getAllAreas() {
   try {
-    const areas = yield call(getAllAreasRequest, payload);
+    const areas = yield call(getAllAreasRequest);
     yield put(recieveApiGetAllAreas(areas));
   } catch (err) {
-    yield put(showRegistrationMessage(err));
+    yield put(showEnrollmentMessage(err));
   }
 }
 export function* requestApiGetAllAreas() {
