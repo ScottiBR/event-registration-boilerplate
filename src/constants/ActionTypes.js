@@ -168,3 +168,7 @@ export const REQUEST_API_UNSUBSCRIBE_LECTURE =
   "request_api_unsubscribe_lecture";
 export const RECIEVE_API_UNSUBSCRIBE_LECTURE =
   "recieve_api_unsubscribe_lecture";
+export const REQUEST_API_GET_EVENT_DETAILS = "request_api_get_event_details";
+export const RECIEVE_API_EVENT_DETAILS = "recieve_api_get_event_details";
+export const REQUEST_API_GET_EVENT_SPEAKER = "request_api_get_event_speaker";
+export const RECIEVE_API_EVENT_SPEAKER = "recieve_api_get_event_speaker";

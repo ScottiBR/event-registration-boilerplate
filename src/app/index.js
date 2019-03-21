@@ -63,6 +63,12 @@ class App extends React.Component {
                   )}
                 />
                 <Route
+                  path={`${match.url}/certificated`}
+                  component={asyncComponent(() =>
+                    import("./routes/Certificated/index")
+                  )}
+                />
+                <Route
                   component={asyncComponent(() =>
                     import("components/Error404")
                   )}

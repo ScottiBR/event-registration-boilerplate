@@ -64,6 +64,17 @@ class Registration extends React.Component {
       birthDay,
       companyType
     } = this.props;
+    this.props.submitRegistrationForm({
+      name,
+      jobId,
+      company,
+      phone,
+      email,
+      password,
+      birthDay,
+      companyType
+    });
+    /*
     if (
       !name ||
       !jobId ||
@@ -90,7 +101,7 @@ class Registration extends React.Component {
         birthDay,
         companyType
       });
-    }
+    }*/
   };
   render() {
     const {

@@ -19,8 +19,8 @@ const Lectures = props => {
   const { id, area, title, startDate, endDate, subscribed } = props.data;
 
   return (
-    <div className="d-flex flex-column ">
-      <div className="jr-featured-content-left">
+    <div className="d-flex flex-column list-full-width">
+      <div className="jr-featured-content-left mt-2">
         <span
           className={`jr-tag text-uppercase bg-${areaColors(
             area
@@ -39,7 +39,10 @@ const Lectures = props => {
           />
           {startDate} - {endDate}
         </p>
-        <a className="text-primary ml-auto mb-0 pointer" href="#">
+        <a
+          className="text-primary ml-auto mb-0 pointer"
+          onClick={() => props.handleMoreInfo()}
+        >
           <span>Detalhes</span>{" "}
           <i
             className={`zmdi zmdi-long-arrow-right jr-fs-xxl ml-2 d-inline-block align-middle`}
@@ -52,7 +55,7 @@ const Lectures = props => {
             variant="outlined"
             size="small"
             color="secondary"
-            onClick={() => props.handleSubscribe(id)}
+            onClick={() => props.handleSubscribe(id, startDate)}
           >
             <IntlMessages id="appModule.subscribe" />
           </Button>

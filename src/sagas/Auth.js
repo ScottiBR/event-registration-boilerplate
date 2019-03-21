@@ -30,7 +30,7 @@ const signInUserWithBirthDayRequest = async userCredentials => {
   return { cpf: 123, name: "sdsda" };
 };
 const checkCpfAlreadyRegistredRequest = async userCredentials => {
-  return 123;
+  return null;
 };
 function* signInUserWithLoginPassword({ payload }) {
   try {

@@ -4,7 +4,9 @@ import {
   REQUEST_API_GET_ALL_AREAS,
   REQUEST_API_GET_LECTURES,
   REQUEST_API_SUBSCRIBE_LECTURE,
-  REQUEST_API_UNSUBSCRIBE_LECTURE
+  REQUEST_API_UNSUBSCRIBE_LECTURE,
+  REQUEST_API_GET_EVENT_DETAILS,
+  REQUEST_API_GET_EVENT_SPEAKER
 } from "constants/ActionTypes";
 import { BASE_URL } from "constants/Environment";
 import {
@@ -13,7 +15,9 @@ import {
   recieveApiGetAllAreas,
   recieveApiGetLectures,
   recieveApiPostSubscribe,
-  recieveApiPostUnsubscribe
+  recieveApiPostUnsubscribe,
+  recieveApiGetEventSpeaker,
+  recieveApiGetEventDetails
 } from "actions";
 
 const postUnsubscribeLectureRequest = async ({ lectureId, RegistrationId }) => {
@@ -28,7 +32,12 @@ const getAllAreasRequest = async () => {
 const getLecturesRequest = async registrationId => {
   return [];
 };
-
+const getEventDetailsRequest = async lectureId => {
+  return {};
+};
+const getEventSpeakerRequest = async lectureId => {
+  return {};
+};
 function* postUnsubscribeLecture({ payload }) {
   try {
     const unsubscribe = yield call(postUnsubscribeLectureRequest, payload);
@@ -70,6 +79,22 @@ function* getAllAreas() {
     yield put(showEnrollmentMessage(err));
   }
 }
+function* getEventDetails() {
+  try {
+    const eventDetails = yield call(getEventDetailsRequest);
+    yield put(recieveApiGetEventDetails(eventDetails));
+  } catch (err) {
+    yield put(showEnrollmentMessage(err));
+  }
+}
+function* getEventSpeaker() {
+  try {
+    const eventSpeakers = yield call(getEventSpeakerRequest);
+    yield put(recieveApiGetEventSpeaker(eventSpeakers));
+  } catch (err) {
+    yield put(showEnrollmentMessage(err));
+  }
+}
 export function* requestApiGetAllAreas() {
   yield takeEvery(REQUEST_API_GET_ALL_AREAS, getAllAreas);
 }
@@ -82,12 +107,19 @@ export function* requestApiPostSubscribeLecture() {
 export function* requestApiPostUnsubscribeLecture() {
   yield takeEvery(REQUEST_API_UNSUBSCRIBE_LECTURE, postUnsubscribeLecture);
 }
-
+export function* requestApiGetEventDetails() {
+  yield takeEvery(REQUEST_API_GET_EVENT_DETAILS, getEventDetails);
+}
+export function* requestApiGetEventSpeaker() {
+  yield takeEvery(REQUEST_API_GET_EVENT_SPEAKER, getEventSpeaker);
+}
 export default function* rootSaga() {
   yield all([
     fork(requestApiGetAllAreas),
     fork(requestApiGetLectures),
     fork(requestApiPostSubscribeLecture),
-    fork(requestApiPostUnsubscribeLecture)
+    fork(requestApiPostUnsubscribeLecture),
+    fork(requestApiGetEventDetails),
+    fork(requestApiGetEventSpeaker)
   ]);
 }

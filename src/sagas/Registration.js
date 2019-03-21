@@ -1,5 +1,5 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
-
+import { push } from "connected-react-router";
 import {
   SUBMIT_REGISTRATION_FORM,
   POPULATE_JOBS_SELECT_REQUEST,
@@ -28,6 +28,7 @@ function* postRegistrationForm({ payload }) {
   try {
     const registrationID = yield call(postRegistrationFormRequest, payload);
     yield put(checkCpfRegistrationRecieve(registrationID));
+    yield put(push("/app/enrollment"));
   } catch (err) {
     yield put(showRegistrationMessage(err));
   }
