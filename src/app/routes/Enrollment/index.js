@@ -44,7 +44,7 @@ class Enrollment extends React.Component {
       textFilter: "",
       dateFilter: "",
       areaFilter: "",
-      searchLecturesOption: true
+      searchLecturesOption: false
     };
   }
   componentDidUpdate() {

@@ -3,9 +3,9 @@ const path = require("path");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const pool = require("./server/middlewares/pool-factory");
-const connectionMiddleware = require("./server/middlewares/connection-middleware");
-const buildPath = path.join(__dirname, "build");
+const pool = require("./middlewares/pool-factory");
+const connectionMiddleware = require("./middlewares/connection-middleware");
+const buildPath = path.join(__dirname, "../build");
 const app = express();
 
 app.use(logger("tiny"));
@@ -15,6 +15,9 @@ app.use(cookieParser());
 app.use(express.static(buildPath));
 app.use(connectionMiddleware(pool));
 
+require("./routes/auth")(app);
+require("./routes/registration")(app);
+require("./routes/enrollment")(app);
 //default redirection for React SPA Routed Apllication
 app.get("*", (req, res) => {
   res.sendFile(path.join(buildPath, "index.html"));

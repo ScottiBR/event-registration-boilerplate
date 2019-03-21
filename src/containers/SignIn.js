@@ -72,7 +72,7 @@ class SignIn extends React.Component {
       if (registrationID === null) {
         this.props.checkCpfRegistrationRequest(cpf);
       } else if (!forgotPassword) {
-        this.props.userSignIn({ cpf, password });
+        this.props.userSignIn({ registrationID, password });
       } else {
         if (mBirthDay.year() > 1900 && mBirthDay.year() <= 2017) {
           this.props.userSignInWithBDay({ registrationID, mBirthDay });

@@ -29,7 +29,7 @@ const signInUserWithLoginPasswordRequest = async userCredentials => {
 const signInUserWithBirthDayRequest = async userCredentials => {
   return { cpf: 123, name: "sdsda" };
 };
-const checkCpfAlreadyRegistredRequest = async userCredentials => {
+const checkCpfAlreadyRegistredRequest = async cpf => {
   return null;
 };
 function* signInUserWithLoginPassword({ payload }) {

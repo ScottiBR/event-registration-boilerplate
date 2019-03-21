@@ -250,7 +250,8 @@ div[tabindex="-1"] {
 }
 
 .remove-table-border {
-  td, th {
+  td,
+  th {
     border: 0 none;
   }
 }
@@ -507,6 +508,10 @@ a.badge-gray {
 }
 
 //Light Color
+.text-warning {
+  color: #a13834 !important;
+  font-weight: bold;
+}
 .text-light {
   color: lighten($black, 60%) !important;
 }
@@ -727,7 +732,12 @@ a.btn-outline-geekblue {
   @include gradient-directional($app-primary, lighten($app-primary, 16%), 0deg);
 }
 .bg-gradient-primary-x {
-  @include gradient-x(darken($app-primary, 10%), lighten($app-primary, 16%), 70%, 100%);
+  @include gradient-x(
+    darken($app-primary, 10%),
+    lighten($app-primary, 16%),
+    70%,
+    100%
+  );
 }
 
 .overflow-hidden {

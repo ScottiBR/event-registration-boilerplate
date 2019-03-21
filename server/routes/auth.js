@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../controllers/auth");
-const { verifyToken } = require("../middlewares/index");
+const {
+  signin,
+  checkCpfAlreadyRegistred,
+  signinWithBDay
+} = require("../controllers/auth");
 
-router.get("/teste", verifyToken, controller.get);
-router.post("/validateLogin", controller.validateUser);
-
+router.post("/signin", signin);
+router.post("/checkCpfAlreadyRegistred", checkCpfAlreadyRegistred);
+router.post("/signinWithBDay", signinWithBDay);
 module.exports = app => app.use("/api/auth", router);

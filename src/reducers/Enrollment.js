@@ -16,6 +16,7 @@ const INIT_STATE = {
     {
       id: 1,
       area: "MEIO AMBIENTE",
+      event: "SEMINARIO DE MEIO AMBIENTE",
       title:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
       startDate: "15/05 09:00",
@@ -25,6 +26,7 @@ const INIT_STATE = {
     {
       id: 2,
       area: "TECNOLOGIA",
+      event: "SEMINARIO DE MEIO AMBIENTE",
       title: "Tech guilherme tech",
       startDate: "15/05 09:00",
       endDate: "15/05 10:00",
@@ -33,6 +35,7 @@ const INIT_STATE = {
     {
       id: 3,
       area: "EDUCAÇÃO",
+      event: "SEMINARIO EDUCAÇÃO",
       title:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
       startDate: "15/05 14:00",
@@ -42,6 +45,7 @@ const INIT_STATE = {
     {
       id: 4,
       area: "SAÚDE",
+      event: "SEMINARIO DE SAÚDE",
       title:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
       startDate: "15/05 16:00",
@@ -53,6 +57,7 @@ const INIT_STATE = {
   eventDetails: {
     id: 1,
     area: "MEIO AMBIENTE",
+    event: "SEMINARIO DE SAÚDE",
     title:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
     startDate: "15/05 09:00",

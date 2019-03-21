@@ -14,7 +14,7 @@ const SearchLectureOrAccessEvent = props => {
           <h3 className="mb-3">
             <IntlMessages id="appModule.acessQuestion" />
           </h3>
-          <p>
+          <p className="text-warning">
             <IntlMessages id="appModule.acessQuestionDescription" />
           </p>
           <div className="d-flex flex-row justify-content-between mb-2 ">
@@ -33,7 +33,6 @@ const SearchLectureOrAccessEvent = props => {
               <IntlMessages id="appModule.lectureSubscription" />
             </Button>
           </div>
-          <p>*O acesso ao evento não garante vaga em nenhuma palestra</p>
         </div>
       </CardBox>
     </div>

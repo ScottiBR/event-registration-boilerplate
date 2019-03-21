@@ -1,17 +1,27 @@
-const jwt = require("jsonwebtoken");
-const secretKey = "AMM@2019";
-const { testeSelect, authLogin } = require("../models/auth");
-exports.get = (req, res, next) => {
+const {
+  checkCpfAlreadyRegistredInDatabase,
+  signinWithBdayAndRegistration,
+  signinWithLoginAndPassword
+} = require("../models/auth");
+exports.signin = (req, res, next) => {
   try {
-    testeSelect(req, res, next);
+    signinWithLoginAndPassword(req.connection, res, req.body, next);
   } catch (err) {
     next(err);
   }
 };
 
-exports.validateUser = async (req, res, next) => {
+exports.checkCpfAlreadyRegistred = async (req, res, next) => {
   try {
-    authLogin(req.connection, res, req.body, next);
+    checkCpfAlreadyRegistredInDatabase(req.connection, res, req.body, next);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.signinWithBDay = async (req, res, next) => {
+  try {
+    signinWithBdayAndRegistration(req.connection, res, req.body, next);
   } catch (err) {
     next(err);
   }
