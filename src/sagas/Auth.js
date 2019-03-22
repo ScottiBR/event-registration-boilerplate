@@ -1,4 +1,5 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { push } from "connected-react-router";
 
 import {
   SIGNIN_USER,
@@ -14,8 +15,7 @@ import {
 } from "actions/Auth";
 
 const signInUserWithLoginPasswordRequest = async userCredentials => {
-  return { cpf: 123, name: "sdsda" };
-  const responseFromServer = await fetch(`${BASE_URL}/api/auth/validateLogin`, {
+  const responseFromServer = await fetch(`${BASE_URL}/api/auth/signin`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,18 +27,41 @@ const signInUserWithLoginPasswordRequest = async userCredentials => {
 };
 
 const signInUserWithBirthDayRequest = async userCredentials => {
-  return { cpf: 123, name: "sdsda" };
+  const responseFromServer = await fetch(
+    `${BASE_URL}/api/auth/signinWithBDay`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "amm-mg.org.br"
+      },
+      body: JSON.stringify(userCredentials)
+    }
+  );
+  return await responseFromServer.json();
 };
 const checkCpfAlreadyRegistredRequest = async cpf => {
-  return null;
+  const responseFromServer = await fetch(
+    `${BASE_URL}/api/auth/checkCpfAlreadyRegistred`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "amm-mg.org.br"
+      },
+      body: JSON.stringify(cpf)
+    }
+  );
+  return await responseFromServer.json();
 };
 function* signInUserWithLoginPassword({ payload }) {
   try {
     const user = yield call(signInUserWithLoginPasswordRequest, payload);
+    console.log(user);
     if (user.error) {
       yield put(showAuthMessage(user.error));
     } else {
-      yield put(userSignInSuccess(user.cpf));
+      yield put(userSignInSuccess(user.CPF));
     }
   } catch (err) {
     yield put(showAuthMessage(err));
@@ -47,10 +70,11 @@ function* signInUserWithLoginPassword({ payload }) {
 function* signInUserWithBirthDay({ payload }) {
   try {
     const user = yield call(signInUserWithBirthDayRequest, payload);
+    console.log(user);
     if (user.error) {
       yield put(showAuthMessage(user.error));
     } else {
-      yield put(userSignInSuccess(user.cpf));
+      yield put(userSignInSuccess(user.CPF));
     }
   } catch (err) {
     yield put(showAuthMessage(err));
@@ -60,7 +84,8 @@ function* checkCpfAlreadyRegistred({ payload }) {
   try {
     const registrationID = yield call(checkCpfAlreadyRegistredRequest, payload);
     if (registrationID === null) {
-      yield put(userSignInSuccess(payload));
+      yield put(userSignInSuccess(payload.cpf));
+      //yield put(push("/app/registration"));
     } else {
       yield put(checkCpfRegistrationRecieve(registrationID));
     }

@@ -15,7 +15,7 @@ const INIT_STATE = {
   showMessage: false,
   initURL: "",
   authUser: null,
-  cpf: "12042796670",
+  cpf: "",
   registrationID: null
 };
 

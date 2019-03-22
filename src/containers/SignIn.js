@@ -50,7 +50,7 @@ class SignIn extends React.Component {
   };
   handleCpfValue = event => {
     const cpfValue = event.target.value.replace(/[^\d]+/g, "");
-    this.props.setCPF(parseFloat(cpfValue));
+    this.props.setCPF(cpfValue);
   };
   handlePasswordValue = event =>
     this.setState({ password: event.target.value });
@@ -65,17 +65,18 @@ class SignIn extends React.Component {
 
   handleSignInValidation = e => {
     const { birthDay, password, forgotPassword } = this.state;
-    let mBirthDay = moment(birthDay, "DDMMYYYY");
+    const mBirthDay = moment(birthDay, "DDMMYYYY");
     const { cpf, registrationID } = this.props;
     if (isValidCpf(cpf)) {
       this.props.showAuthLoader();
       if (registrationID === null) {
-        this.props.checkCpfRegistrationRequest(cpf);
+        this.props.checkCpfRegistrationRequest({ cpf });
       } else if (!forgotPassword) {
         this.props.userSignIn({ registrationID, password });
       } else {
-        if (mBirthDay.year() > 1900 && mBirthDay.year() <= 2017) {
-          this.props.userSignInWithBDay({ registrationID, mBirthDay });
+        if (mBirthDay.year() > 1900 && mBirthDay.year() <= 2015) {
+          const strBirthDay = mBirthDay.format("YYYY-MM-DD");
+          this.props.userSignInWithBDay({ registrationID, strBirthDay });
         } else {
           this.props.showAuthMessage("Data de Nascimento Incorreta");
         }

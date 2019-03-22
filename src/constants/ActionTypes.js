@@ -154,6 +154,9 @@ export const POPULATE_JOBS_SELECT_RECIEVE = "populate_jobs_select_recieve";
 export const POPULATE_JOBS_SELECT_REQUEST = "populate_jobs_select_request";
 export const SUBMIT_REGISTRATION_FORM = "submit_registration_form";
 
+export const REQUEST_API_POST_USER_DATA = "request_api_post_user_data";
+export const REQUEST_API_POST_USER_DATA_SUCCESS = "recieve_api_post_user_data";
+
 //Enrollment Constants
 export const SHOW_ENROLLMENT_MESSAGE = "show_enrollment_message";
 export const HIDE_ENROLLMENT_MESSAGE = "hide_enrollment_message";

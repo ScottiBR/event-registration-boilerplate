@@ -3,7 +3,8 @@ import { push } from "connected-react-router";
 import {
   SUBMIT_REGISTRATION_FORM,
   POPULATE_JOBS_SELECT_REQUEST,
-  POPULATE_CITIES_SELECT_REQUEST
+  POPULATE_CITIES_SELECT_REQUEST,
+  REQUEST_API_POST_USER_DATA
 } from "constants/ActionTypes";
 import { BASE_URL } from "constants/Environment";
 import {
@@ -11,18 +12,50 @@ import {
   populateCitiesSelectRecieve,
   populateJobsSelectRecieve,
   showRegistrationMessage,
+  getUserDataSuccess,
   setInitUrl
 } from "actions";
 
 const postRegistrationFormRequest = async form => {
-  return 123;
+  const responseFromServer = await fetch(
+    `${BASE_URL}/api/registration/postRegistrationFormRequest`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "amm-mg.org.br"
+      },
+      body: JSON.stringify(form)
+    }
+  );
+  return await responseFromServer.json();
+};
+const getUserRequest = async cpf => {
+  const responseFromServer = await fetch(
+    `${BASE_URL}/api/registration/postGetUserRequest`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "amm-mg.org.br"
+      },
+      body: JSON.stringify(cpf)
+    }
+  );
+  return await responseFromServer.json();
 };
 
 const getJobsRequest = async () => {
-  return [{ id: 1, name: "PREFEITO(A)" }, { id: 2, name: "VICE-PREFEITO(A)" }];
+  const responseFromServer = await fetch(
+    `${BASE_URL}/api/registration/getJobsRequest`
+  );
+  return await responseFromServer.json();
 };
 const getCitiesRequest = async () => {
-  return [{ id: 0, name: "Selecione" }, { id: 1, name: "ABADIA DOS DOURADOS" }];
+  const responseFromServer = await fetch(
+    `${BASE_URL}/api/registration/getCitiesRequest`
+  );
+  return await responseFromServer.json();
 };
 function* postRegistrationForm({ payload }) {
   try {
@@ -33,18 +66,29 @@ function* postRegistrationForm({ payload }) {
     yield put(showRegistrationMessage(err));
   }
 }
-function* getCities({ payload }) {
+function* getCities() {
   try {
-    const cities = yield call(getCitiesRequest, payload);
+    const cities = yield call(getCitiesRequest);
     yield put(populateCitiesSelectRecieve(cities));
   } catch (err) {
     yield put(showRegistrationMessage(err));
   }
 }
-function* getJobs({ payload }) {
+function* getJobs() {
   try {
-    const jobs = yield call(getJobsRequest, payload);
+    const jobs = yield call(getJobsRequest);
     yield put(populateJobsSelectRecieve(jobs));
+  } catch (err) {
+    yield put(showRegistrationMessage(err));
+  }
+}
+
+function* getUser({ payload }) {
+  try {
+    const userData = yield call(getUserRequest, payload);
+    if (userData !== null) {
+      yield put(getUserDataSuccess(userData));
+    }
   } catch (err) {
     yield put(showRegistrationMessage(err));
   }
@@ -58,11 +102,15 @@ export function* submitRegistrationForm() {
 export function* populateCitiesSelect() {
   yield takeEvery(POPULATE_CITIES_SELECT_REQUEST, getCities);
 }
+export function* getUserDetails() {
+  yield takeEvery(REQUEST_API_POST_USER_DATA, getUser);
+}
 
 export default function* rootSaga() {
   yield all([
     fork(populateJobsSelect),
     fork(submitRegistrationForm),
-    fork(populateCitiesSelect)
+    fork(populateCitiesSelect),
+    fork(getUserDetails)
   ]);
 }

@@ -6,7 +6,9 @@ import {
   POPULATE_CITIES_SELECT_REQUEST,
   POPULATE_JOBS_SELECT_RECIEVE,
   POPULATE_JOBS_SELECT_REQUEST,
-  SUBMIT_REGISTRATION_FORM
+  SUBMIT_REGISTRATION_FORM,
+  REQUEST_API_POST_USER_DATA,
+  REQUEST_API_POST_USER_DATA_SUCCESS
 } from "constants/ActionTypes";
 
 export const handleChangeValue = (name, value) => {
@@ -58,5 +60,18 @@ export const submitRegistrationForm = form => {
   return {
     type: SUBMIT_REGISTRATION_FORM,
     payload: form
+  };
+};
+
+export const getUserData = cpf => {
+  return {
+    type: REQUEST_API_POST_USER_DATA,
+    payload: cpf
+  };
+};
+export const getUserDataSuccess = userData => {
+  return {
+    type: REQUEST_API_POST_USER_DATA_SUCCESS,
+    payload: userData
   };
 };

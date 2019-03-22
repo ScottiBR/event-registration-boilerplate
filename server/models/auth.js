@@ -3,22 +3,24 @@ const jwt = require("jsonwebtoken");
 const secretKey = "AMM@2019";
 
 exports.checkCpfAlreadyRegistredInDatabase = (connection, res, body, next) => {
-  query_str = `select ID from inscrito WHERE CPF = ${body.cpf}`;
-  console.log(query_str);
+  const query_str = `select ID as registrationID from inscrito WHERE CPF = ${
+    body.cpf
+  }`;
   connection.query(query_str, (err, resultSet) => {
     if (err) {
       next(err);
     } else if (resultSet.length == 0) {
       res.json(null);
     } else {
-      res.json(resultSet[0]);
+      res.json(resultSet[0].registrationID);
     }
   });
 };
 exports.signinWithBdayAndRegistration = (connection, res, body, next) => {
-  query_str = `select ID from inscrito WHERE ID = ${
-    body.registrationId
-  } AND ANIVERSARIO=\"${body.birthDay}\" `;
+  const query_str = `select CPF  from inscrito WHERE ID = ${
+    body.registrationID
+  } AND ANIVERSARIO='${body.strBirthDay}' `;
+  console.log(query_str);
   connection.query(query_str, (err, resultSet) => {
     if (err) {
       next(err);
@@ -32,10 +34,9 @@ exports.signinWithBdayAndRegistration = (connection, res, body, next) => {
 
 exports.signinWithLoginAndPassword = (connection, res, user, next) => {
   const passwordEncrypted = md5(user.password);
-  query_str = `select ID from inscrito WHERE ID = ${
-    user.registrationId
-  } AND SENHA=\"${passwordEncrypted}\" `;
-
+  const query_str = `select CPF from inscrito WHERE ID = ${
+    user.registrationID
+  } AND SENHA='${passwordEncrypted}' `;
   connection.query(query_str, (err, resultSet) => {
     if (err) {
       next(err);

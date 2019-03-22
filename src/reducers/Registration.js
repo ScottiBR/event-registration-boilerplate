@@ -3,9 +3,11 @@ import {
   HANDLE_VALUE_CHANGE,
   HIDE_REGISTRATION_MESSAGE,
   POPULATE_JOBS_SELECT_RECIEVE,
-  POPULATE_CITIES_SELECT_RECIEVE
+  POPULATE_CITIES_SELECT_RECIEVE,
+  REQUEST_API_POST_USER_DATA_SUCCESS
 } from "constants/ActionTypes";
 
+import moment from "moment";
 const INIT_STATE = {
   name: "",
   jobId: "",
@@ -18,7 +20,8 @@ const INIT_STATE = {
   jobs: [],
   cities: [],
   showMessage: false,
-  alertMessage: ""
+  alertMessage: "",
+  privilageUser: false
 };
 
 export default (state = INIT_STATE, action) => {
@@ -54,6 +57,22 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         cities: action.payload
+      };
+    }
+    case REQUEST_API_POST_USER_DATA_SUCCESS: {
+      let privilageUser = false;
+      let momentBirthDay;
+      if (action.payload.jobId === 96) {
+        privilageUser = true;
+      }
+      if (action.payload.birthDay !== null) {
+        momentBirthDay = moment(action.payload.birthDay).format("DDMMYYYY");
+      }
+      return {
+        ...state,
+        ...action.payload,
+        privilageUser,
+        birthDay: momentBirthDay
       };
     }
 

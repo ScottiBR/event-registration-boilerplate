@@ -9,7 +9,8 @@ import {
   hideRegistrationMessage,
   populateCitiesSelect,
   populateJobsSelect,
-  submitRegistrationForm
+  submitRegistrationForm,
+  getUserData
 } from "actions/Registration";
 import { connect } from "react-redux";
 import IntlMessages from "util/IntlMessages";
@@ -28,6 +29,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
+import moment from "moment";
 
 class Registration extends React.Component {
   componentDidUpdate() {
@@ -38,8 +40,10 @@ class Registration extends React.Component {
     }
   }
   componentDidMount() {
+    const { cpf } = this.props;
     this.props.populateCitiesSelect();
     this.props.populateJobsSelect();
+    this.props.getUserData({ cpf });
   }
   handleChange = name => e => {
     this.props.handleChangeValue(name, e.target.value);
@@ -55,6 +59,7 @@ class Registration extends React.Component {
 
   handleRegistrationValidation = () => {
     const {
+      cpf,
       name,
       jobId,
       company,
@@ -62,19 +67,11 @@ class Registration extends React.Component {
       email,
       password,
       birthDay,
-      companyType
+      companyType,
+      privilageUser
     } = this.props;
-    this.props.submitRegistrationForm({
-      name,
-      jobId,
-      company,
-      phone,
-      email,
-      password,
-      birthDay,
-      companyType
-    });
-    /*
+
+    const mBirthDay = moment(birthDay, "DDMMYYYY");
     if (
       !name ||
       !jobId ||
@@ -90,18 +87,26 @@ class Registration extends React.Component {
       this.props.showRegistrationMessage(`Celular: ${phone} incorreto`);
     } else if (!validateEmail.validate(email)) {
       this.props.showRegistrationMessage(`Email com caracteres inválidos`);
+    } else if (mBirthDay.year() < 1900 || mBirthDay.year() > 2015) {
+      this.props.showRegistrationMessage("Data de Nascimento Incorreta");
+    } else if (!privilageUser && jobId === 96) {
+      this.props.showRegistrationMessage(
+        "Você selecionou um cargo que não condiz com a sua função =)"
+      );
     } else {
+      const strBirthDay = mBirthDay.format("YYYY-MM-DD");
       this.props.submitRegistrationForm({
+        cpf,
         name,
         jobId,
         company,
         phone,
         email,
         password,
-        birthDay,
+        strBirthDay,
         companyType
       });
-    }*/
+    }
   };
   render() {
     const {
@@ -171,7 +176,7 @@ class Registration extends React.Component {
                   fullWidth
                   required={true}
                   onChange={this.handleChange("email")}
-                  defaultValue={email}
+                  value={email}
                   margin="normal"
                   className="mt-1 my-sm-3"
                 />
@@ -293,7 +298,8 @@ const mapStateToProps = ({ auth, registration }) => {
     showMessage,
     alertMessage,
     jobs,
-    cities
+    cities,
+    privilageUser
   } = registration;
   return {
     cpf,
@@ -308,13 +314,15 @@ const mapStateToProps = ({ auth, registration }) => {
     showMessage,
     alertMessage,
     jobs,
-    cities
+    cities,
+    privilageUser
   };
 };
 
 export default connect(
   mapStateToProps,
   {
+    getUserData,
     handleChangeValue,
     showRegistrationMessage,
     hideRegistrationMessage,
