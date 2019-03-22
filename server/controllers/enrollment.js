@@ -1,26 +1,50 @@
 const {
-  getComissions,
-  getMembers,
-  getProjects
-} = require("../models/comission");
+  postUnsubscribeLecture,
+  postSubscribeLecture,
+  getAllAreas,
+  getLectures,
+  getEventDetails,
+  getEventSpeaker
+} = require("../models/enrollment");
 
-exports.getAllComissions = async (req, res, next) => {
+exports.postUnsubscribeLectureRequest = async (req, res, next) => {
   try {
-    getComissions(req.connection, res, next);
+    postUnsubscribeLecture(req.connection, res, next, req.body);
   } catch (err) {
     next(err);
   }
 };
-exports.getComissionMembers = async (req, res, next) => {
+exports.postSubscribeLectureRequest = async (req, res, next) => {
   try {
-    getMembers(req.connection, res, next, req.params.id);
+    postSubscribeLecture(req.connection, res, next, req.body);
   } catch (err) {
     next(err);
   }
 };
-exports.getComissionProjets = async (req, res, next) => {
+exports.getAllAreasRequest = async (req, res, next) => {
   try {
-    getProjects(req.connection, res, next, req.params.id);
+    getAllAreas(req.connection, res, next);
+  } catch (err) {
+    next(err);
+  }
+};
+exports.getLecturesRequest = async (req, res, next) => {
+  try {
+    getLectures(req.connection, res, next, req.params.id);
+  } catch (err) {
+    next(err);
+  }
+};
+exports.getEventDetailsRequest = async (req, res, next) => {
+  try {
+    getEventDetails(req.connection, res, next, req.params.id);
+  } catch (err) {
+    next(err);
+  }
+};
+exports.getEventSpeakerRequest = async (req, res, next) => {
+  try {
+    getEventSpeaker(req.connection, res, next, req.params.id);
   } catch (err) {
     next(err);
   }

@@ -3,6 +3,7 @@ import IntlMessages from "util/IntlMessages";
 import CardBox from "components/CardBox";
 import Button from "@material-ui/core/Button";
 
+import { NavLink, Redirect } from "react-router-dom";
 const SearchLectureOrAccessEvent = props => {
   return (
     <div className="d-flex justify-content-center ">
@@ -18,13 +19,11 @@ const SearchLectureOrAccessEvent = props => {
             <IntlMessages id="appModule.acessQuestionDescription" />
           </p>
           <div className="d-flex flex-row justify-content-between mb-2 ">
-            <Button
-              onClick={props.validateEnrollment}
-              variant="contained"
-              color="secondary"
-            >
-              <IntlMessages id="appModule.accessEvent" />
-            </Button>
+            <NavLink to={`certificated`}>
+              <Button variant="contained" color="secondary">
+                <IntlMessages id="appModule.accessEvent" />
+              </Button>
+            </NavLink>
             <Button
               onClick={props.searcHlectures}
               variant="contained"

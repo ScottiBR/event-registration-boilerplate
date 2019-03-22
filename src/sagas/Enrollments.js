@@ -20,23 +20,58 @@ import {
   recieveApiGetEventDetails
 } from "actions";
 
-const postUnsubscribeLectureRequest = async ({ lectureId, RegistrationId }) => {
-  return { error: null };
+const postUnsubscribeLectureRequest = async info => {
+  const responseFromServer = await fetch(
+    `${BASE_URL}/api/enrollment/postUnsubscribeLectureRequest`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "amm-mg.org.br"
+      },
+      body: JSON.stringify(info)
+    }
+  );
+  return await responseFromServer.json();
 };
-const postSubscribeLectureRequest = async ({ lectureId, RegistrationId }) => {
-  return { error: null };
+const postSubscribeLectureRequest = async info => {
+  const responseFromServer = await fetch(
+    `${BASE_URL}/api/enrollment/postSubscribeLectureRequest`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "amm-mg.org.br"
+      },
+      body: JSON.stringify(info)
+    }
+  );
+  return await responseFromServer.json();
 };
 const getAllAreasRequest = async () => {
-  return [];
+  const responseFromServer = await fetch(
+    `${BASE_URL}/api/enrollment/getAllAreasRequest`
+  );
+  return await responseFromServer.json();
 };
+
 const getLecturesRequest = async registrationId => {
-  return [];
+  const responseFromServer = await fetch(
+    `${BASE_URL}/api/enrollment/getLecturesRequest/${registrationId}`
+  );
+  return await responseFromServer.json();
 };
 const getEventDetailsRequest = async lectureId => {
-  return {};
+  const responseFromServer = await fetch(
+    `${BASE_URL}/api/enrollment/getEventDetailsRequest/${lectureId}`
+  );
+  return await responseFromServer.json();
 };
 const getEventSpeakerRequest = async lectureId => {
-  return {};
+  const responseFromServer = await fetch(
+    `${BASE_URL}/api/enrollment/getEventSpeakerRequest/${lectureId}`
+  );
+  return await responseFromServer.json();
 };
 function* postUnsubscribeLecture({ payload }) {
   try {
@@ -79,17 +114,17 @@ function* getAllAreas() {
     yield put(showEnrollmentMessage(err));
   }
 }
-function* getEventDetails() {
+function* getEventDetails({ payload }) {
   try {
-    const eventDetails = yield call(getEventDetailsRequest);
+    const eventDetails = yield call(getEventDetailsRequest, payload);
     yield put(recieveApiGetEventDetails(eventDetails));
   } catch (err) {
     yield put(showEnrollmentMessage(err));
   }
 }
-function* getEventSpeaker() {
+function* getEventSpeaker({ payload }) {
   try {
-    const eventSpeakers = yield call(getEventSpeakerRequest);
+    const eventSpeakers = yield call(getEventSpeakerRequest, payload);
     yield put(recieveApiGetEventSpeaker(eventSpeakers));
   } catch (err) {
     yield put(showEnrollmentMessage(err));

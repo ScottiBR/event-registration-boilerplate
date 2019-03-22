@@ -50,10 +50,10 @@ export const recieveApiGetLectures = lecturesList => {
     payload: lecturesList
   };
 };
-export const requestApiPostSubscribe = (lectureId, RegistrationId) => {
+export const requestApiPostSubscribe = (lectureId, registrationId) => {
   return {
     type: REQUEST_API_SUBSCRIBE_LECTURE,
-    payload: { lectureId, RegistrationId }
+    payload: { lectureId, registrationId }
   };
 };
 export const recieveApiPostSubscribe = lectureId => {
@@ -62,10 +62,10 @@ export const recieveApiPostSubscribe = lectureId => {
     payload: lectureId
   };
 };
-export const requestApiPostUnsubscribe = (lectureId, RegistrationId) => {
+export const requestApiPostUnsubscribe = (lectureId, registrationId) => {
   return {
     type: REQUEST_API_UNSUBSCRIBE_LECTURE,
-    payload: { lectureId, RegistrationId }
+    payload: { lectureId, registrationId }
   };
 };
 export const recieveApiPostUnsubscribe = lectureId => {

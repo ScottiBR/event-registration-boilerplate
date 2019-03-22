@@ -1,5 +1,5 @@
 import React from "react";
-
+import moment from "moment";
 import IntlMessages from "util/IntlMessages";
 import CardBox from "components/CardBox";
 const EventDetails = props => {
@@ -21,7 +21,8 @@ const EventDetails = props => {
             <i
               className={`zmdi zmdi-calendar-alt jr-fs-lg mr-2 d-inline-block align-middle`}
             />
-            {startDate} - {endDate}
+            {moment(startDate).format("DD/MM HH:mm")} -{" "}
+            {moment(endDate).format("DD/MM HH:mm")}
           </p>
         </div>
       </div>

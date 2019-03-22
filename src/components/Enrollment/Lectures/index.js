@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import IntlMessages from "util/IntlMessages";
-
+import moment from "moment";
 const areaColors = area => {
   switch (area) {
     case "SAúDE":
@@ -37,11 +37,12 @@ const Lectures = props => {
           <i
             className={`zmdi zmdi-calendar-alt jr-fs-lg mr-2 d-inline-block align-middle`}
           />
-          {startDate} - {endDate}
+          {moment(startDate).format("DD/MM HH:mm")} -{" "}
+          {moment(endDate).format("DD/MM HH:mm")}
         </p>
         <a
           className="text-primary ml-auto mb-0 pointer"
-          onClick={() => props.handleMoreInfo()}
+          onClick={() => props.handleMoreInfo(id)}
         >
           <span>Detalhes</span>{" "}
           <i

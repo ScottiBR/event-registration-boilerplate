@@ -1,57 +1,128 @@
-exports.getComissions = (connection, res, next) => {
-  const query_str = `SELECT ID AS id, NOME AS name FROM comissoes ORDER BY NOME ASC`;
+exports.postUnsubscribeLecture = (connection, res, next, body) => {
+  const query_delete = `DELETE FROM inscrito_palestra WHERE INSCRITO_ID = ${
+    body.registrationID
+  } AND PALESTRA_ID = ${body.lectureId}`;
+  connection.query(query_delete, (err, result) => {
+    if (err) {
+      next(err);
+    } else if (result.affectedRows === null) {
+      next(`Erro no SQL: ${query_insert}`);
+    } else {
+      res.json(result.affectedRows);
+    }
+  });
+};
+
+exports.postSubscribeLecture = (connection, res, next, body) => {
+  console.log(body);
+  const query_occupation = `select (s.CAPACIDADE-IFNULL(sum(i.ID),0)) as avaibleSeats from palestra p 
+  join sala s on s.ID = p.SALA_ID
+  left join inscrito_palestra i on i.PALESTRA_ID = p.ID
+  where p.ID=${body.lectureId}`;
+  connection.query(query_occupation, (err, resultSelect) => {
+    console.log(query_occupation);
+    console.log(resultSelect);
+    if (err) {
+      next(err);
+    } else if (resultSelect === null) {
+      next(`Erro no SQL: ${query_occupation}`);
+    } else if (resultSelect[0].avaibleSeats < 1) {
+      next(`Sem vagas disponíveis`);
+    } else {
+      const query_insert = `INSERT INTO inscrito_palestra (ID, INSCRITO_ID, PALESTRA_ID) VALUES (NULL, ${
+        body.registrationId
+      }, ${body.lectureId})`;
+      console.log(query_insert);
+      connection.query(query_insert, (err, result) => {
+        console.log(result);
+        if (err) {
+          next(err);
+        } else if (result.insertId === null) {
+          next(`Erro no SQL: ${query_insert}`);
+        } else {
+          res.json(result.insertId);
+        }
+      });
+    }
+  });
+};
+
+exports.getAllAreas = (connection, res, next) => {
+  const query_str = `select ID as id, NOME as name, EVENTO as fullName from area_interesse order by EVENTO ASC`;
   connection.query(query_str, (err, resultSet) => {
     if (err) {
       next(err);
     } else if (resultSet.length == 0) {
-      res.json(resultSet);
+      next(`Erro no SQL: ${query_str}`);
     } else {
       res.json(resultSet);
     }
   });
 };
 
-exports.getMembers = (connection, res, next, idComission) => {
-  const query_str = `
-  select cg.ID as "id" ,
-  cg.nickName as "name",
-  c.CARGO as "nickName",
-    cg.party as "party",
-    c.CARGO as "job" ,
-    cg.phone as "phone",
-    cg.facebook as "facebook",
-    cg.instagram as "instagram",
-    cg.photoFile as "photoFile"
-  from comissao_membros c
-  join view_appPersonByOrgaoID cg on cg.id =c.CAGE_N_CODIGO and cg.idOrgao = 49190 and cg.job ='DEPE'
-  where c.COMISSAO_ID =${idComission}`;
+exports.getLectures = (connection, res, next, registrationID) => {
+  const query_str = `select 
+  p.ID as id,
+  a.EVENTO as event,
+  a.NOME as area,
+  p.TITULO as title,
+  p.INICIO as startDate,
+  p.FIM as endDate,
+  (case IFNULL(i.ID,0) WHEN 0 THEN 0 ELSE 1 END) as subscribed
+  from palestra p 
+  left join area_interesse a on a.ID = p.AREA_INTERESSE_ID
+  left join inscrito_palestra i on i.PALESTRA_ID = p.ID and i.INSCRITO_ID=${registrationID}
+  ORDER BY a.EVENTO ASC ,p.TITULO ASC`;
   connection.query(query_str, (err, resultSet) => {
     if (err) {
       next(err);
     } else if (resultSet.length == 0) {
-      res.json(resultSet);
+      next(`Erro no SQL: ${query_str}`);
     } else {
       res.json(resultSet);
     }
   });
 };
-exports.getProjects = (connection, res, next, idComission) => {
-  const query_str = `
-  select p.id as "id",
-    p.NOME as "description",
-    c.nickName as "manager",
-    p.RESUMO as "summary",
-    p.ANALISE as "review",
-    p.SUGESTAO as "suggestion",
-    p.PRESENTE as "presence"
-  from projetos p
-  join view_appPersonByOrgaoID c on c.id = p.CAGE_N_CODIGO and job ='DEPE'
-  WHERE COMISSAO_ID =${idComission}`;
+
+exports.getEventDetails = (connection, res, next, lectureId) => {
+  const query_str = `select 
+  p.ID as id,
+  a.EVENTO as event,
+  a.NOME as area,
+  p.TITULO as title,
+  p.INICIO as startDate,
+  p.FIM as endDate,
+  p.DESCRICAO as description
+  from palestra p 
+  left join area_interesse a on a.ID = p.AREA_INTERESSE_ID 
+  WHERE p.ID = ${lectureId}`;
+  console.log(query_str);
+  connection.query(query_str, (err, resultSet) => {
+    console.log(resultSet);
+    if (err) {
+      next(err);
+    } else if (resultSet.length == 0) {
+      next(`Palestra Inexistente`);
+    } else {
+      res.json(resultSet[0]);
+    }
+  });
+};
+
+exports.getEventSpeaker = (connection, res, next, lectureId) => {
+  const query_str = `select 
+  p.ID as id,
+  p.NOME as name,
+  p.CARGO as job,
+  p.EMPRESA as company,
+  p.FOTO as photoFile
+  from palestrante p 
+  join palestra_palestrantes l on l.PALESTRANTE_ID = p.ID and l.PALESTRA_ID =${lectureId} ORDER BY  p.NOME ASC`;
   connection.query(query_str, (err, resultSet) => {
     if (err) {
       next(err);
     } else if (resultSet.length == 0) {
-      res.json(resultSet);
+      res.json(null);
     } else {
       res.json(resultSet);
     }

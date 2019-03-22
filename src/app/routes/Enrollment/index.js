@@ -55,8 +55,8 @@ class Enrollment extends React.Component {
     }
   }
   componentDidMount() {
-    //this.props.requestApiGetLectures(this.props.registrationID);
-    //this.props.requestApiGetAllAreas();
+    this.props.requestApiGetLectures(this.props.registrationID);
+    this.props.requestApiGetAllAreas();
   }
 
   handleChange = name => e => {
@@ -74,10 +74,12 @@ class Enrollment extends React.Component {
 
   handleSubscribe = (lectureId, chosenDate) => {
     const checkScheduledConflict = this.props.lecturesList.filter(
-      lecture => lecture.subscribed === true && lecture.startDate === chosenDate
+      lecture =>
+        lecture.subscribed === 1 && lecture.startDate.includes(chosenDate)
     );
+    console.log(checkScheduledConflict);
     if (checkScheduledConflict.length === 0) {
-      this.props.requestApiPostSubscribe(lectureId, this.props.registrationId);
+      this.props.requestApiPostSubscribe(lectureId, this.props.registrationID);
     } else {
       this.props.showEnrollmentMessage(
         `Palestra com conflito de horário ${chosenDate}`
@@ -85,7 +87,7 @@ class Enrollment extends React.Component {
     }
   };
   handleUnsubscribe = lectureId => {
-    this.props.requestApiPostUnsubscribe(lectureId, this.props.registrationId);
+    this.props.requestApiPostUnsubscribe(lectureId, this.props.registrationID);
   };
   searcHlectures = () => {
     this.setState({ searchLecturesOption: true });
@@ -95,8 +97,9 @@ class Enrollment extends React.Component {
     //this.props.showEnrollmentMessage("Comprovante de Inscrição");
   };
   handleMoreInfo = lectureId => {
+    console.log(lectureId);
     this.props.requestApiGetEventDetails(lectureId);
-    this.props.requestApiGetEventSpeaker(lectureId);
+    //this.props.requestApiGetEventSpeaker(lectureId);
     this.setState({ openSpeakerModal: true });
   };
   handleRequestClose = () => this.setState({ openSpeakerModal: false });
@@ -116,7 +119,7 @@ class Enrollment extends React.Component {
       eventSpeakers
     } = this.props;
     const subscribedLectures = lecturesList.filter(
-      value => value.subscribed === true
+      value => value.subscribed === 1
     );
     return (
       <div className="app-wrapper">
@@ -173,7 +176,7 @@ class Enrollment extends React.Component {
             >
               <List component="nav">
                 {lecturesList
-                  .filter(value => value.subscribed === false)
+                  .filter(value => value.subscribed === 0)
                   .filter(this.filterLecturesList)
                   .map(data => (
                     <ListItem
@@ -224,7 +227,6 @@ class Enrollment extends React.Component {
           </AppBar>
           <div className="d-flex flex-wrap justify-content-center">
             <EventDetails event={eventDetails} />
-            <EventSpeakers speakers={eventSpeakers} />
           </div>
         </Dialog>
       </div>
