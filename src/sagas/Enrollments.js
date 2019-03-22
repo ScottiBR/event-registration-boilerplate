@@ -1,4 +1,11 @@
-import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import {
+  all,
+  call,
+  fork,
+  put,
+  takeEvery,
+  takeLatest
+} from "redux-saga/effects";
 
 import {
   REQUEST_API_GET_ALL_AREAS,
@@ -55,9 +62,9 @@ const getAllAreasRequest = async () => {
   return await responseFromServer.json();
 };
 
-const getLecturesRequest = async registrationId => {
+const getLecturesRequest = async registrationID => {
   const responseFromServer = await fetch(
-    `${BASE_URL}/api/enrollment/getLecturesRequest/${registrationId}`
+    `${BASE_URL}/api/enrollment/getLecturesRequest/${registrationID}`
   );
   return await responseFromServer.json();
 };
@@ -137,10 +144,10 @@ export function* requestApiGetLectures() {
   yield takeEvery(REQUEST_API_GET_LECTURES, getLectures);
 }
 export function* requestApiPostSubscribeLecture() {
-  yield takeEvery(REQUEST_API_SUBSCRIBE_LECTURE, postSubscribeLecture);
+  yield takeLatest(REQUEST_API_SUBSCRIBE_LECTURE, postSubscribeLecture);
 }
 export function* requestApiPostUnsubscribeLecture() {
-  yield takeEvery(REQUEST_API_UNSUBSCRIBE_LECTURE, postUnsubscribeLecture);
+  yield takeLatest(REQUEST_API_UNSUBSCRIBE_LECTURE, postUnsubscribeLecture);
 }
 export function* requestApiGetEventDetails() {
   yield takeEvery(REQUEST_API_GET_EVENT_DETAILS, getEventDetails);

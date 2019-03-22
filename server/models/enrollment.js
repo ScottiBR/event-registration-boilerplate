@@ -14,14 +14,11 @@ exports.postUnsubscribeLecture = (connection, res, next, body) => {
 };
 
 exports.postSubscribeLecture = (connection, res, next, body) => {
-  console.log(body);
-  const query_occupation = `select (s.CAPACIDADE-IFNULL(sum(i.ID),0)) as avaibleSeats from palestra p 
+  const query_occupation = `select (s.CAPACIDADE-IFNULL(count(i.ID),0)) as avaibleSeats from palestra p 
   join sala s on s.ID = p.SALA_ID
   left join inscrito_palestra i on i.PALESTRA_ID = p.ID
   where p.ID=${body.lectureId}`;
   connection.query(query_occupation, (err, resultSelect) => {
-    console.log(query_occupation);
-    console.log(resultSelect);
     if (err) {
       next(err);
     } else if (resultSelect === null) {
@@ -32,9 +29,7 @@ exports.postSubscribeLecture = (connection, res, next, body) => {
       const query_insert = `INSERT INTO inscrito_palestra (ID, INSCRITO_ID, PALESTRA_ID) VALUES (NULL, ${
         body.registrationId
       }, ${body.lectureId})`;
-      console.log(query_insert);
       connection.query(query_insert, (err, result) => {
-        console.log(result);
         if (err) {
           next(err);
         } else if (result.insertId === null) {

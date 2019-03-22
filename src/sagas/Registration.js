@@ -1,4 +1,11 @@
-import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import {
+  all,
+  call,
+  fork,
+  put,
+  takeEvery,
+  takeLatest
+} from "redux-saga/effects";
 import { push } from "connected-react-router";
 import {
   SUBMIT_REGISTRATION_FORM,
@@ -97,7 +104,7 @@ export function* populateJobsSelect() {
   yield takeEvery(POPULATE_JOBS_SELECT_REQUEST, getJobs);
 }
 export function* submitRegistrationForm() {
-  yield takeEvery(SUBMIT_REGISTRATION_FORM, postRegistrationForm);
+  yield takeLatest(SUBMIT_REGISTRATION_FORM, postRegistrationForm);
 }
 export function* populateCitiesSelect() {
   yield takeEvery(POPULATE_CITIES_SELECT_REQUEST, getCities);

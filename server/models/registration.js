@@ -25,28 +25,39 @@ exports.getCities = (connection, res, next) => {
 };
 
 exports.postRegistrationForm = (connection, res, next, form) => {
-  const EVENTO_ATUAL = 8;
-  const {
-    cpf,
-    name,
-    jobId,
-    company,
-    phone,
-    email,
-    password,
-    strBirthDay,
-    companyType
-  } = form;
-  const passwordEncrypted = md5(password);
-  const query_insert = `INSERT INTO inscrito (ID, CPF, EVENTO_ID, NOME, CARGO_ID, EMPRESA, EMPRESA_TIPO, CELULAR, EMAIL, DATA_INSCRICAO, SENHA, ANIVERSARIO) 
-  VALUES (NULL, '${cpf}', ${EVENTO_ATUAL}, '${name}', ${jobId}, '${company}', '${companyType}', '${phone}', '${email}', CURDATE(), '${passwordEncrypted}', '${strBirthDay}');`;
-  connection.query(query_insert, (err, result) => {
+  const query_str = `select ID from inscrito WHERE CPF = ${form.cpf}`;
+  connection.query(query_str, (err, resultSet) => {
     if (err) {
       next(err);
-    } else if (result.insertId === null) {
-      next(`Erro no SQL: ${query_insert}`);
+    } else if (resultSet.length == 0) {
+      const EVENTO_ATUAL = 8;
+      const {
+        cpf,
+        name,
+        jobId,
+        company,
+        phone,
+        email,
+        password,
+        strBirthDay,
+        companyType
+      } = form;
+      const passwordEncrypted = md5(password);
+      const query_insert = `INSERT INTO inscrito (ID, CPF, EVENTO_ID, NOME, CARGO_ID, EMPRESA, EMPRESA_TIPO, CELULAR, EMAIL, DATA_INSCRICAO, SENHA, ANIVERSARIO) 
+  VALUES (NULL, '${cpf}', ${EVENTO_ATUAL}, '${name}', ${jobId}, '${company}', '${companyType}', '${phone}', '${email}', CURDATE(), '${passwordEncrypted}', '${strBirthDay}');`;
+      connection.query(query_insert, (err, result) => {
+        if (err) {
+          next(err);
+        } else if (result.insertId === null) {
+          next(`Erro no SQL: ${query_insert}`);
+        } else {
+          res.json(result.insertId);
+        }
+      });
     } else {
-      res.json(result.insertId);
+      next(
+        `ERRO tire um print dessa tela e envie para suporte.sistemas@amm-mg.org.br`
+      );
     }
   });
 };
@@ -64,9 +75,10 @@ exports.postGetUser = (connection, res, next, body) => {
   DATA_NASCIMENTO as birthDay
   from credenciamento_base WHERE CPF =${cpf}`;
   connection.query(query_select, (err, result) => {
+    console.log(result.length === 0);
     if (err) {
       next(err);
-    } else if (result === null) {
+    } else if (result.length === 0) {
       res.json(null);
     } else {
       res.json(result[0]);
