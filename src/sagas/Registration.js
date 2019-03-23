@@ -4,14 +4,16 @@ import {
   fork,
   put,
   takeEvery,
-  takeLatest
+  takeLatest,
+  takeLeading
 } from "redux-saga/effects";
 import { push } from "connected-react-router";
 import {
   SUBMIT_REGISTRATION_FORM,
   POPULATE_JOBS_SELECT_REQUEST,
   POPULATE_CITIES_SELECT_REQUEST,
-  REQUEST_API_POST_USER_DATA
+  REQUEST_API_POST_USER_DATA,
+  REDIRECT_TO_NEXT_PAGE
 } from "constants/ActionTypes";
 import { BASE_URL } from "constants/Environment";
 import {
@@ -67,7 +69,9 @@ const getCitiesRequest = async () => {
 function* postRegistrationForm({ payload }) {
   try {
     const registrationID = yield call(postRegistrationFormRequest, payload);
-    yield put(checkCpfRegistrationRecieve(registrationID));
+    if (registrationID !== null) {
+      yield put(checkCpfRegistrationRecieve(registrationID));
+    }
     yield put(push("/app/enrollment"));
   } catch (err) {
     yield put(showRegistrationMessage(err));
@@ -89,7 +93,13 @@ function* getJobs() {
     yield put(showRegistrationMessage(err));
   }
 }
-
+function* redirectNext() {
+  try {
+    yield put(push("/app/enrollment"));
+  } catch (err) {
+    yield put(showRegistrationMessage(err));
+  }
+}
 function* getUser({ payload }) {
   try {
     const userData = yield call(getUserRequest, payload);
@@ -104,7 +114,7 @@ export function* populateJobsSelect() {
   yield takeEvery(POPULATE_JOBS_SELECT_REQUEST, getJobs);
 }
 export function* submitRegistrationForm() {
-  yield takeLatest(SUBMIT_REGISTRATION_FORM, postRegistrationForm);
+  yield takeLeading(SUBMIT_REGISTRATION_FORM, postRegistrationForm);
 }
 export function* populateCitiesSelect() {
   yield takeEvery(POPULATE_CITIES_SELECT_REQUEST, getCities);
@@ -112,12 +122,16 @@ export function* populateCitiesSelect() {
 export function* getUserDetails() {
   yield takeEvery(REQUEST_API_POST_USER_DATA, getUser);
 }
+export function* redirectToNextPage() {
+  yield takeEvery(REDIRECT_TO_NEXT_PAGE, redirectNext);
+}
 
 export default function* rootSaga() {
   yield all([
     fork(populateJobsSelect),
     fork(submitRegistrationForm),
     fork(populateCitiesSelect),
-    fork(getUserDetails)
+    fork(getUserDetails),
+    fork(redirectToNextPage)
   ]);
 }

@@ -55,9 +55,7 @@ exports.postRegistrationForm = (connection, res, next, form) => {
         }
       });
     } else {
-      next(
-        `ERRO tire um print dessa tela e envie para suporte.sistemas@amm-mg.org.br`
-      );
+      res.json(null);
     }
   });
 };

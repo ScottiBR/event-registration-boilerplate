@@ -128,7 +128,6 @@ class Enrollment extends React.Component {
             <CardBox
               styleName="col-lg-12 col-md-12  col-sm-12"
               childrenStyle="d-flex flex-column justify-content-start"
-              heading={<IntlMessages id="pages.enrollment.filter" />}
             >
               <LecturesFilter
                 handleChange={this.handleChange}

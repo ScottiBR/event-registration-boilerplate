@@ -153,7 +153,7 @@ export const POPULATE_CITIES_SELECT_REQUEST = "populate_cities_select_request";
 export const POPULATE_JOBS_SELECT_RECIEVE = "populate_jobs_select_recieve";
 export const POPULATE_JOBS_SELECT_REQUEST = "populate_jobs_select_request";
 export const SUBMIT_REGISTRATION_FORM = "submit_registration_form";
-
+export const REDIRECT_TO_NEXT_PAGE = "redirect_to_next_page";
 export const REQUEST_API_POST_USER_DATA = "request_api_post_user_data";
 export const REQUEST_API_POST_USER_DATA_SUCCESS = "recieve_api_post_user_data";
 

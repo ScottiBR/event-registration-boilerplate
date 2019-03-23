@@ -15,7 +15,8 @@ const INIT_STATE = {
   lecturesList: [],
   areasList: [],
   eventDetails: {},
-  eventSpeakers: []
+  eventSpeakers: [],
+  showLoader: false
 };
 
 export default (state = INIT_STATE, action) => {

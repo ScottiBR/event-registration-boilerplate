@@ -10,7 +10,8 @@ import {
   populateCitiesSelect,
   populateJobsSelect,
   submitRegistrationForm,
-  getUserData
+  getUserData,
+  redirectToNextPage
 } from "actions/Registration";
 import { connect } from "react-redux";
 import IntlMessages from "util/IntlMessages";
@@ -40,10 +41,14 @@ class Registration extends React.Component {
     }
   }
   componentDidMount() {
-    const { cpf } = this.props;
-    this.props.populateCitiesSelect();
-    this.props.populateJobsSelect();
-    this.props.getUserData({ cpf });
+    const { cpf, registrationID } = this.props;
+    if (registrationID !== null) {
+      this.props.redirectToNextPage();
+    } else {
+      this.props.populateCitiesSelect();
+      this.props.populateJobsSelect();
+      this.props.getUserData({ cpf });
+    }
   }
   handleChange = name => e => {
     this.props.handleChangeValue(name, e.target.value);
@@ -285,7 +290,7 @@ class Registration extends React.Component {
   }
 }
 const mapStateToProps = ({ auth, registration }) => {
-  const { cpf } = auth;
+  const { cpf, registrationID } = auth;
   const {
     name,
     jobId,
@@ -315,7 +320,8 @@ const mapStateToProps = ({ auth, registration }) => {
     alertMessage,
     jobs,
     cities,
-    privilageUser
+    privilageUser,
+    registrationID
   };
 };
 
@@ -328,6 +334,7 @@ export default connect(
     hideRegistrationMessage,
     populateCitiesSelect,
     populateJobsSelect,
-    submitRegistrationForm
+    submitRegistrationForm,
+    redirectToNextPage
   }
 )(Registration);

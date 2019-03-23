@@ -8,7 +8,8 @@ import {
   POPULATE_JOBS_SELECT_REQUEST,
   SUBMIT_REGISTRATION_FORM,
   REQUEST_API_POST_USER_DATA,
-  REQUEST_API_POST_USER_DATA_SUCCESS
+  REQUEST_API_POST_USER_DATA_SUCCESS,
+  REDIRECT_TO_NEXT_PAGE
 } from "constants/ActionTypes";
 
 export const handleChangeValue = (name, value) => {
@@ -73,5 +74,11 @@ export const getUserDataSuccess = userData => {
   return {
     type: REQUEST_API_POST_USER_DATA_SUCCESS,
     payload: userData
+  };
+};
+
+export const redirectToNextPage = () => {
+  return {
+    type: REDIRECT_TO_NEXT_PAGE
   };
 };

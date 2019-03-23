@@ -4,7 +4,8 @@ import {
   fork,
   put,
   takeEvery,
-  takeLatest
+  takeLatest,
+  takeLeading
 } from "redux-saga/effects";
 
 import {
@@ -144,10 +145,10 @@ export function* requestApiGetLectures() {
   yield takeEvery(REQUEST_API_GET_LECTURES, getLectures);
 }
 export function* requestApiPostSubscribeLecture() {
-  yield takeLatest(REQUEST_API_SUBSCRIBE_LECTURE, postSubscribeLecture);
+  yield takeLeading(REQUEST_API_SUBSCRIBE_LECTURE, postSubscribeLecture);
 }
 export function* requestApiPostUnsubscribeLecture() {
-  yield takeLatest(REQUEST_API_UNSUBSCRIBE_LECTURE, postUnsubscribeLecture);
+  yield takeLeading(REQUEST_API_UNSUBSCRIBE_LECTURE, postUnsubscribeLecture);
 }
 export function* requestApiGetEventDetails() {
   yield takeEvery(REQUEST_API_GET_EVENT_DETAILS, getEventDetails);
