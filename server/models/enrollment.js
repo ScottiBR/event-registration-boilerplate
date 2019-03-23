@@ -1,6 +1,6 @@
 exports.postUnsubscribeLecture = (connection, res, next, body) => {
   const query_delete = `DELETE FROM inscrito_palestra WHERE INSCRITO_ID = ${
-    body.registrationID
+    body.registrationId
   } AND PALESTRA_ID = ${body.lectureId}`;
   connection.query(query_delete, (err, result) => {
     if (err) {
@@ -91,9 +91,7 @@ exports.getEventDetails = (connection, res, next, lectureId) => {
   from palestra p 
   left join area_interesse a on a.ID = p.AREA_INTERESSE_ID 
   WHERE p.ID = ${lectureId}`;
-  console.log(query_str);
   connection.query(query_str, (err, resultSet) => {
-    console.log(resultSet);
     if (err) {
       next(err);
     } else if (resultSet.length == 0) {

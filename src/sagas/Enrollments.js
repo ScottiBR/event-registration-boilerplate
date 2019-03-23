@@ -32,7 +32,7 @@ const postUnsubscribeLectureRequest = async info => {
   const responseFromServer = await fetch(
     `${BASE_URL}/api/enrollment/postUnsubscribeLectureRequest`,
     {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "amm-mg.org.br"

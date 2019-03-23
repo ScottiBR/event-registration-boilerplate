@@ -21,7 +21,7 @@ import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import { withStyles } from "@material-ui/core/styles";
-
+import moment from "moment";
 import Dialog from "@material-ui/core/Dialog";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -72,17 +72,27 @@ class Enrollment extends React.Component {
     );
   };
 
-  handleSubscribe = (lectureId, chosenDate) => {
+  handleSubscribe = (lectureId, chosenStartDate, chosenEndDate) => {
+    const momentChosenStartDate = moment(chosenStartDate);
+    const momentChosenEndDate = moment(chosenEndDate);
     const checkScheduledConflict = this.props.lecturesList.filter(
-      lecture =>
-        lecture.subscribed === 1 && lecture.startDate.includes(chosenDate)
+      ({ startDate, endDate, subscribed }) => {
+        const mStartDate = moment(startDate);
+        const mEndDate = moment(endDate);
+        return (
+          subscribed === 1 &&
+          (momentChosenStartDate === mStartDate ||
+            momentChosenEndDate === mEndDate ||
+            momentChosenStartDate.isBetween(mStartDate, mEndDate) ||
+            momentChosenEndDate.isBetween(mStartDate, mEndDate))
+        );
+      }
     );
-    console.log(checkScheduledConflict);
     if (checkScheduledConflict.length === 0) {
       this.props.requestApiPostSubscribe(lectureId, this.props.registrationID);
     } else {
       this.props.showEnrollmentMessage(
-        `Palestra com conflito de horário ${chosenDate}`
+        `Conflito de horário ${momentChosenStartDate.format("DD/MM HH:mm")}`
       );
     }
   };
@@ -92,12 +102,7 @@ class Enrollment extends React.Component {
   searcHlectures = () => {
     this.setState({ searchLecturesOption: true });
   };
-  validateEnrollment = () => {
-    //return <Redirect to={"certificated"} />;
-    //this.props.showEnrollmentMessage("Comprovante de Inscrição");
-  };
   handleMoreInfo = lectureId => {
-    console.log(lectureId);
     this.props.requestApiGetEventDetails(lectureId);
     //this.props.requestApiGetEventSpeaker(lectureId);
     this.setState({ openSpeakerModal: true });
@@ -152,7 +157,7 @@ class Enrollment extends React.Component {
                         key={data.id}
                         data={data}
                         handleMoreInfo={this.handleMoreInfo}
-                        handleSubscribe={this.handleUnsubscribe}
+                        handleUnsubscribe={this.handleUnsubscribe}
                       />
                     </ListItem>
                   ))}
@@ -197,10 +202,7 @@ class Enrollment extends React.Component {
             <NotificationContainer />
           </div>
         ) : (
-          <SearchLectureOrAccessEvent
-            searcHlectures={this.searcHlectures}
-            validateEnrollment={this.validateEnrollment}
-          />
+          <SearchLectureOrAccessEvent searcHlectures={this.searcHlectures} />
         )}
         <Dialog
           fullScreen

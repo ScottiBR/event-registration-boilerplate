@@ -57,7 +57,6 @@ const checkCpfAlreadyRegistredRequest = async cpf => {
 function* signInUserWithLoginPassword({ payload }) {
   try {
     const user = yield call(signInUserWithLoginPasswordRequest, payload);
-    console.log(user);
     if (user.error) {
       yield put(showAuthMessage(user.error));
     } else {
@@ -70,7 +69,6 @@ function* signInUserWithLoginPassword({ payload }) {
 function* signInUserWithBirthDay({ payload }) {
   try {
     const user = yield call(signInUserWithBirthDayRequest, payload);
-    console.log(user);
     if (user.error) {
       yield put(showAuthMessage(user.error));
     } else {

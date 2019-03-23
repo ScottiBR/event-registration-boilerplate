@@ -4,12 +4,20 @@ import IntlMessages from "util/IntlMessages";
 import moment from "moment";
 const areaColors = area => {
   switch (area) {
-    case "SAúDE":
-      return "info";
-    case "EDUCAÇÃO":
-      return "warning";
-    case "MEIO AMBIENTE":
+    case "ENCONTRO DE SECRETÁRIOS DE MEIO AMBIENTE":
       return "success";
+    case "SEMINÁRIO DE ASSISTÊNCIA SOCIAL":
+      return "sepia";
+    case "SEMINÁRIO DE TECNOLOGIA E INOVAÇÃO PUBLICA":
+      return "info";
+    case "ENCONTRO DE PREFEITAS, VICES E VEREADORAS":
+      return "lightpink";
+    case "FÓRUM MINEIRO DE EDUCAÇÃO":
+      return "lightyellow";
+    case "FÓRUM MINEIRO DE EDUCAÇÃO":
+      return "dark";
+    case "SEMINÁRIO DE SAÚDE":
+      return "geekblue";
     default:
       return "";
   }
@@ -51,12 +59,21 @@ const Lectures = props => {
         </a>
       </div>
       <div className="mb-3 mt-1 d-flex flex-column align-items-center justify-content-center">
-        {!subscribed && (
+        {subscribed ? (
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={() => props.handleUnsubscribe(id)}
+          >
+            <IntlMessages id="appModule.unSubscribe" />
+          </Button>
+        ) : (
           <Button
             variant="outlined"
             size="small"
             color="secondary"
-            onClick={() => props.handleSubscribe(id, startDate)}
+            onClick={() => props.handleSubscribe(id, startDate, endDate)}
           >
             <IntlMessages id="appModule.subscribe" />
           </Button>

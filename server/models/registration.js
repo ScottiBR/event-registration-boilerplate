@@ -73,7 +73,6 @@ exports.postGetUser = (connection, res, next, body) => {
   DATA_NASCIMENTO as birthDay
   from credenciamento_base WHERE CPF =${cpf}`;
   connection.query(query_select, (err, result) => {
-    console.log(result.length === 0);
     if (err) {
       next(err);
     } else if (result.length === 0) {

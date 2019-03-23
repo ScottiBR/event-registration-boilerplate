@@ -20,7 +20,6 @@ exports.signinWithBdayAndRegistration = (connection, res, body, next) => {
   const query_str = `select CPF  from inscrito WHERE ID = ${
     body.registrationID
   } AND ANIVERSARIO='${body.strBirthDay}' `;
-  console.log(query_str);
   connection.query(query_str, (err, resultSet) => {
     if (err) {
       next(err);

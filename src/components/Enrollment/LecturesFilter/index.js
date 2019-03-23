@@ -65,7 +65,7 @@ const LecturesFilter = props => {
           </MenuItem>
           {areasList.map(area => (
             <MenuItem key={area.id} value={area.name}>
-              {area.name}
+              {area.fullName}
             </MenuItem>
           ))}
         </Select>
