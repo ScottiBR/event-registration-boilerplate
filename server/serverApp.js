@@ -6,9 +6,24 @@ const bodyParser = require("body-parser");
 const pool = require("./middlewares/pool-factory");
 const connectionMiddleware = require("./middlewares/connection-middleware");
 const buildPath = path.join(__dirname, "../build");
+const cors = require("cors");
 const app = express();
-
+var whitelist = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "http://inscricaoonline.amm-mg.org.br"
+];
+var corsOptions = {
+  origin: function(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error(`${origin} Acesso negado!`));
+    }
+  }
+};
 app.use(logger("tiny"));
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());

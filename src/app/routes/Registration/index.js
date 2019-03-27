@@ -262,7 +262,7 @@ class Registration extends React.Component {
 
                 <TextField
                   type="password"
-                  label={<IntlMessages id="appModule.password" />}
+                  label={<IntlMessages id="pages.registration.password" />}
                   fullWidth
                   required={true}
                   onChange={this.handleChange("password")}

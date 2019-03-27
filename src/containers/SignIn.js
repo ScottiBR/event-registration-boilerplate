@@ -141,6 +141,7 @@ class SignIn extends React.Component {
                           onKeyPress={this.handleKeyPress}
                           margin="normal"
                           className="mt-1 my-sm-3"
+                          autoFocus={true}
                         />
                       ) : (
                         <TextField
@@ -151,6 +152,7 @@ class SignIn extends React.Component {
                           value={formatStringByPattern("99/99/9999", birthDay)}
                           margin="normal"
                           className="mt-1 my-sm-3"
+                          autoFocus={true}
                         />
                       )}
                     </div>

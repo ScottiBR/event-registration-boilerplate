@@ -24,7 +24,7 @@ const areaColors = area => {
 };
 
 const Lectures = props => {
-  const { id, area, title, startDate, endDate, subscribed } = props.data;
+  const { id, area, title, startDate, endDate, subscribed, full } = props.data;
 
   return (
     <div className="d-flex flex-column list-full-width">
@@ -69,14 +69,28 @@ const Lectures = props => {
             <IntlMessages id="appModule.unSubscribe" />
           </Button>
         ) : (
-          <Button
-            variant="outlined"
-            size="small"
-            color="secondary"
-            onClick={() => props.handleSubscribe(id, startDate, endDate)}
-          >
-            <IntlMessages id="appModule.subscribe" />
-          </Button>
+          <div>
+            {full ? (
+              <Button
+                variant="contained"
+                size="small"
+                disabled
+                color="primary"
+                onClick={() => props.handleSubscribe(id, startDate, endDate)}
+              >
+                <IntlMessages id="appModule.full" />
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                size="small"
+                color="secondary"
+                onClick={() => props.handleSubscribe(id, startDate, endDate)}
+              >
+                <IntlMessages id="appModule.subscribe" />
+              </Button>
+            )}
+          </div>
         )}
       </div>
     </div>

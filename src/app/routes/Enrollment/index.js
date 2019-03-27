@@ -75,25 +75,32 @@ class Enrollment extends React.Component {
   handleSubscribe = (lectureId, chosenStartDate, chosenEndDate) => {
     const momentChosenStartDate = moment(chosenStartDate);
     const momentChosenEndDate = moment(chosenEndDate);
-    const checkScheduledConflict = this.props.lecturesList.filter(
+    const checkSubscribedLectures = this.props.lecturesList.filter(
+      value => value.subscribed === 1
+    );
+    const checkScheduledConflict = checkSubscribedLectures.filter(
       ({ startDate, endDate, subscribed }) => {
         const mStartDate = moment(startDate);
         const mEndDate = moment(endDate);
         return (
           subscribed === 1 &&
-          (momentChosenStartDate === mStartDate ||
-            momentChosenEndDate === mEndDate ||
+          (momentChosenStartDate.isSame(mStartDate) ||
+            momentChosenEndDate.isSame(mEndDate) ||
             momentChosenStartDate.isBetween(mStartDate, mEndDate) ||
             momentChosenEndDate.isBetween(mStartDate, mEndDate))
         );
       }
     );
-    if (checkScheduledConflict.length === 0) {
-      this.props.requestApiPostSubscribe(lectureId, this.props.registrationID);
-    } else {
+    if (checkSubscribedLectures.length >= 4) {
+      this.props.showEnrollmentMessage(
+        `É permitido apenas 4 inscrições por CPF`
+      );
+    } else if (checkScheduledConflict.length !== 0) {
       this.props.showEnrollmentMessage(
         `Conflito de horário ${momentChosenStartDate.format("DD/MM HH:mm")}`
       );
+    } else {
+      this.props.requestApiPostSubscribe(lectureId, this.props.registrationID);
     }
   };
   handleUnsubscribe = lectureId => {

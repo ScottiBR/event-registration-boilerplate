@@ -56,17 +56,24 @@ exports.getAllAreas = (connection, res, next) => {
 };
 
 exports.getLectures = (connection, res, next, registrationID) => {
-  const query_str = `select 
+  const query_str = `
+  select 
   p.ID as id,
   a.EVENTO as event,
   a.NOME as area,
   p.TITULO as title,
   p.INICIO as startDate,
   p.FIM as endDate,
-  (case IFNULL(i.ID,0) WHEN 0 THEN 0 ELSE 1 END) as subscribed
+  (case IFNULL(i.ID,0) WHEN 0 THEN 0 ELSE 1 END) as subscribed,
+  (case IFNULL(x.CHEIA,0) WHEN 0 THEN 0 ELSE 1 END) as full
   from palestra p 
   left join area_interesse a on a.ID = p.AREA_INTERESSE_ID
+    left join (select p.ID as ID,1 as CHEIA from palestra p 
+  join sala s on s.ID = p.SALA_ID
+  left join inscrito_palestra i on i.PALESTRA_ID = p.ID
+  group by p.ID,s.CAPACIDADE  HAVING s.CAPACIDADE = count(i.ID)) x on x.ID = p.ID
   left join inscrito_palestra i on i.PALESTRA_ID = p.ID and i.INSCRITO_ID=${registrationID}
+  WHERE p.CANCELA_INSCRICAO =0
   ORDER BY a.EVENTO ASC ,p.TITULO ASC`;
   connection.query(query_str, (err, resultSet) => {
     if (err) {

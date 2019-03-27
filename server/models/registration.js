@@ -1,6 +1,6 @@
 const md5 = require("md5");
 exports.getJobs = (connection, res, next) => {
-  const query_str = `select CRG_N_CODIGO as id, CRG_T_DESCRICAO as name from sig_ap_cargos order by CRG_T_DESCRICAO ASC`;
+  const query_str = `select CRG_N_CODIGO as id, CRG_T_DESCRICAO as name from sig_ap_cargos WHERE CRG_N_CODIGO not in (123,124,125,83) order by CRG_T_DESCRICAO ASC`;
   connection.query(query_str, (err, resultSet) => {
     if (err) {
       next(err);
