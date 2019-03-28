@@ -1,14 +1,9 @@
 import React from "react";
 
-import formatCpf from "@brazilian-utils/format-cpf";
 import IntlMessages from "util/IntlMessages";
-import isValidPhone from "@brazilian-utils/is-valid-phone";
-import formatStringByPattern from "format-string-by-pattern";
-import * as validateEmail from "email-validator";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormLabel from "@material-ui/core/FormLabel";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";

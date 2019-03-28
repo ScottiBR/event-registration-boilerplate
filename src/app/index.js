@@ -4,8 +4,6 @@ import { connect } from "react-redux";
 import Header from "components/Header/index";
 import Footer from "components/Footer";
 import {
-  ABOVE_THE_HEADER,
-  BELOW_THE_HEADER,
   COLLAPSED_DRAWER,
   FIXED_DRAWER,
   HORIZONTAL_NAVIGATION
@@ -15,12 +13,7 @@ import asyncComponent from "../util/asyncComponent";
 
 class App extends React.Component {
   render() {
-    const {
-      match,
-      drawerType,
-      navigationStyle,
-      horizontalNavPosition
-    } = this.props;
+    const { match, drawerType, navigationStyle } = this.props;
     const drawerStyle = drawerType.includes(FIXED_DRAWER)
       ? "fixed-drawer"
       : drawerType.includes(COLLAPSED_DRAWER)

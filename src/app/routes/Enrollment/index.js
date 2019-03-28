@@ -3,7 +3,7 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
-import { NavLink, Redirect } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   showEnrollmentMessage,
   hideEnrollmentMessage,
@@ -111,7 +111,7 @@ class Enrollment extends React.Component {
   };
   handleMoreInfo = lectureId => {
     this.props.requestApiGetEventDetails(lectureId);
-    //this.props.requestApiGetEventSpeaker(lectureId);
+    this.props.requestApiGetEventSpeaker(lectureId);
     this.setState({ openSpeakerModal: true });
   };
   handleRequestClose = () => this.setState({ openSpeakerModal: false });
@@ -123,7 +123,6 @@ class Enrollment extends React.Component {
     const {
       showMessage,
       alertMessage,
-      registrationID,
       lecturesList,
       classes,
       areasList,
@@ -235,6 +234,7 @@ class Enrollment extends React.Component {
           </AppBar>
           <div className="d-flex flex-wrap justify-content-center">
             <EventDetails event={eventDetails} />
+            <EventSpeakers speakers={eventSpeakers} />
           </div>
         </Dialog>
       </div>

@@ -13,6 +13,7 @@
   "pages.enrollment.filter.secondDay": "Dia 15",
   "pages.enrollment.filter.allDates": "Todos",
   "pages.enrollment.filter.area": "Evento",
+  "pages.certificate.warningText": "Inscrição Realizada com sucesso, baixe o comprovante abaixo para facilitar o acesso ao evento",
   "pages.speakers": "Palestrantes",
   "pages.moreDetails": "Mais Detalhes",
   "pages.eventDetails": "Palestra",

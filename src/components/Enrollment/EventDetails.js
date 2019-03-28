@@ -6,7 +6,7 @@ const EventDetails = props => {
   const { title, description, startDate, endDate, area } = props.event;
   return (
     <CardBox
-      styleName="col-sm-12 col-md-8 col-lg-6 mt-5"
+      styleName="col-sm-12 col-md-8 col-lg-8 mt-5"
       heading={<IntlMessages id="pages.eventDetails" />}
     >
       <div className="d-flex  flex-column justify-content-start">

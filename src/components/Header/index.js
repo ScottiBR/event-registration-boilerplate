@@ -3,11 +3,8 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
 import {
   BELOW_THE_HEADER,
-  COLLAPSED_DRAWER,
-  FIXED_DRAWER,
   HORIZONTAL_NAVIGATION,
   INSIDE_THE_HEADER
 } from "constants/ActionTypes";
@@ -21,12 +18,7 @@ class Header extends React.Component {
   };
 
   render() {
-    const { drawerType, navigationStyle, horizontalNavPosition } = this.props;
-    const drawerStyle = drawerType.includes(FIXED_DRAWER)
-      ? "d-block d-xl-none"
-      : drawerType.includes(COLLAPSED_DRAWER)
-      ? "d-block"
-      : "d-none";
+    const { navigationStyle, horizontalNavPosition } = this.props;
 
     return (
       <AppBar

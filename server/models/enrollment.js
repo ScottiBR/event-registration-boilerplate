@@ -115,7 +115,8 @@ exports.getEventSpeaker = (connection, res, next, lectureId) => {
   p.NOME as name,
   p.CARGO as job,
   p.EMPRESA as company,
-  p.FOTO as photoFile
+  p.FOTO as photoFile,
+  p.MINI_CURRICULO as jobHistory
   from palestrante p 
   join palestra_palestrantes l on l.PALESTRANTE_ID = p.ID and l.PALESTRA_ID =${lectureId} ORDER BY  p.NOME ASC`;
   connection.query(query_str, (err, resultSet) => {

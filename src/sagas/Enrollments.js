@@ -4,7 +4,6 @@ import {
   fork,
   put,
   takeEvery,
-  takeLatest,
   takeLeading
 } from "redux-saga/effects";
 
@@ -18,7 +17,6 @@ import {
 } from "constants/ActionTypes";
 import { BASE_URL } from "constants/Environment";
 import {
-  hideEnrollmentMessage,
   showEnrollmentMessage,
   recieveApiGetAllAreas,
   recieveApiGetLectures,

@@ -1,5 +1,4 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
-import { push } from "connected-react-router";
 
 import {
   SIGNIN_USER,
@@ -10,8 +9,7 @@ import { BASE_URL } from "constants/Environment";
 import {
   showAuthMessage,
   userSignInSuccess,
-  checkCpfRegistrationRecieve,
-  setInitUrl
+  checkCpfRegistrationRecieve
 } from "actions/Auth";
 
 const signInUserWithLoginPasswordRequest = async userCredentials => {

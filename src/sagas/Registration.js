@@ -4,7 +4,6 @@ import {
   fork,
   put,
   takeEvery,
-  takeLatest,
   takeLeading
 } from "redux-saga/effects";
 import { push } from "connected-react-router";
@@ -21,8 +20,7 @@ import {
   populateCitiesSelectRecieve,
   populateJobsSelectRecieve,
   showRegistrationMessage,
-  getUserDataSuccess,
-  setInitUrl
+  getUserDataSuccess
 } from "actions";
 
 const postRegistrationFormRequest = async form => {

@@ -14,7 +14,6 @@ import SignIn from "./SignIn";
 import { setInitUrl } from "../actions/Auth";
 import RTL from "util/RTL";
 import asyncComponent from "util/asyncComponent";
-import Registration from "../app/routes/Registration";
 
 const RestrictedRoute = ({ component: Component, authUser, ...rest }) => (
   <Route

@@ -3,7 +3,7 @@ import IntlMessages from "util/IntlMessages";
 import CardBox from "components/CardBox";
 import Button from "@material-ui/core/Button";
 
-import { NavLink, Redirect } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 const SearchLectureOrAccessEvent = props => {
   return (
     <div className="d-flex justify-content-center ">

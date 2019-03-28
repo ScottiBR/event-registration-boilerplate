@@ -8,8 +8,7 @@ class Certificated extends React.Component {
       <div className="d-flex flex-column app-iframe-view">
         <div className="d-flex flex-row justify-content-center">
           <h3>
-            Inscrição Realizada com sucesso, baixe o comprovante abaixo para
-            facilitar o acesso ao evento
+            <IntlMessages id={"pages.certificate.warningText"} />
           </h3>
         </div>
         <div className="app-iframe-view">
