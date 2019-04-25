@@ -43,8 +43,9 @@ exports.postRegistrationForm = (connection, res, next, form) => {
         companyType
       } = form;
       const passwordEncrypted = md5(password);
+      const nameEscaped = name.replace("'", "''");
       const query_insert = `INSERT INTO inscrito (ID, CPF, EVENTO_ID, NOME, CARGO_ID, EMPRESA, EMPRESA_TIPO, CELULAR, EMAIL, DATA_INSCRICAO, SENHA, ANIVERSARIO) 
-  VALUES (NULL, '${cpf}', ${EVENTO_ATUAL}, '${name}', ${jobId}, '${company}', '${companyType}', '${phone}', '${email}', CURDATE(), '${passwordEncrypted}', '${strBirthDay}');`;
+  VALUES (NULL, '${cpf}', ${EVENTO_ATUAL}, '${nameEscaped}', ${jobId}, '${company}', '${companyType}', '${phone}', '${email}', CURDATE(), '${passwordEncrypted}', '${strBirthDay}');`;
       connection.query(query_insert, (err, result) => {
         if (err) {
           next(err);
@@ -78,6 +79,7 @@ exports.postGetUser = (connection, res, next, body) => {
     } else if (result.length === 0) {
       res.json(null);
     } else {
+      console.log(result[0]);
       res.json(result[0]);
     }
   });

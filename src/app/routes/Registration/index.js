@@ -94,7 +94,7 @@ class Registration extends React.Component {
       this.props.showRegistrationMessage(`Email com caracteres inválidos`);
     } else if (mBirthDay.year() < 1900 || mBirthDay.year() > 2015) {
       this.props.showRegistrationMessage("Data de Nascimento Incorreta");
-    } else if (!privilageUser && jobId === 96) {
+    } else if (!privilageUser && jobId === 96 && companyType !== "O") {
       this.props.showRegistrationMessage(
         "Você selecionou um cargo que não condiz com a sua função =)"
       );

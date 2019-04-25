@@ -3,7 +3,6 @@ import Button from "@material-ui/core/Button";
 import IntlMessages from "util/IntlMessages";
 import moment from "moment";
 const areaColors = area => {
-  console.log(area === "FÓRUM MINEIRO DE EDUCAÇÃO");
   switch (area) {
     case "ENCONTRO DE SECRETÁRIOS DE MEIO AMBIENTE":
       return "light-green";
@@ -14,7 +13,7 @@ const areaColors = area => {
     case "ENCONTRO DE PREFEITAS, VICES E VEREADORAS":
       return "pink";
     case "FÓRUM MINEIRO DE EDUCAÇÃO":
-      return "yellow";
+      return "brown";
     case "SEMINÁRIO DE PROCURADORES E CONTROLADORES":
       return "dark";
     case "CONGRESSO MINEIRO DE VEREADORES":

@@ -74,7 +74,7 @@ exports.getLectures = (connection, res, next, registrationID) => {
   group by p.ID,s.CAPACIDADE  HAVING s.CAPACIDADE = count(i.ID)) x on x.ID = p.ID
   left join inscrito_palestra i on i.PALESTRA_ID = p.ID and i.INSCRITO_ID=${registrationID}
   WHERE p.CANCELA_INSCRICAO =0
-  ORDER BY a.EVENTO ASC ,p.TITULO ASC`;
+  ORDER BY a.ORDEM ASC ,p.INICIO ASC`;
   connection.query(query_str, (err, resultSet) => {
     if (err) {
       next(err);

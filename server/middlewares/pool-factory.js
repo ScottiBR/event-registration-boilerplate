@@ -5,9 +5,18 @@ const pool = mysql.createPool({
   host: "localhost",
   user: "dejore_gestor",
   password: "m@Cz5d59",
-  database: "gestor"
+  database: "gestor",
+  timezone: "UTC",
+  dateStrings: ["DATE", "DATETIME"]
 });
 
+pool.on("connection", conn => {
+  conn.query("SET time_zone='-03:00';", error => {
+    if (error) {
+      throw error;
+    }
+  });
+});
 //console.log("pool => criado");
 
 //pool.on("release", () => console.log("pool => conexão retornada"));

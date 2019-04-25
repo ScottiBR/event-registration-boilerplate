@@ -6,10 +6,21 @@ class Certificated extends React.Component {
   render() {
     return (
       <div className="d-flex flex-column app-iframe-view">
-        <div className="d-flex flex-row justify-content-center">
+        <div className="d-flex flex-column justify-content-center">
           <h3>
             <IntlMessages id={"pages.certificate.warningText"} />
           </h3>
+          <p>
+            Caso ocorra problemas para baixar o comprovante, clique no link ao
+            lado{" "}
+            <a
+              href={`http://gestor2.amm-mg.org.br/pdf_comprovante_inscricao_low?ID=${
+                this.props.registrationID
+              }`}
+            >
+              PDF
+            </a>
+          </p>
         </div>
         <div className="app-iframe-view">
           <Iframe
