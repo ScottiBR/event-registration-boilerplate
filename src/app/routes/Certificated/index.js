@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 class Certificated extends React.Component {
   render() {
     return (
-      <div className="d-flex flex-column app-iframe-view">
+      <div className="d-flex flex-column m-2">
         <div className="d-flex flex-column justify-content-center">
           <h3>
             <IntlMessages id={"pages.certificate.warningText"} />

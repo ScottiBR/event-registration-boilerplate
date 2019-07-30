@@ -133,7 +133,7 @@ class Registration extends React.Component {
       <div className="app-wrapper">
         <div className="d-flex justify-content-center">
           <CardBox
-            styleName="col-lg-5 col-md-7"
+            styleName="col-lg-6 col-md-8"
             childrenStyle="d-flex flex-column justify-content-start"
             heading={<IntlMessages id="pages.registration" />}
           >

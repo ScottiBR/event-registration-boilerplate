@@ -66,8 +66,9 @@ class SignIn extends React.Component {
   handleSignInValidation = e => {
     const { birthDay, password, forgotPassword } = this.state;
     const mBirthDay = moment(birthDay, "DDMMYYYY");
+    const encerrarInscricao = true;
     const { cpf, registrationID } = this.props;
-    if (isValidCpf(cpf)) {
+    if (isValidCpf(cpf) && encerrarInscricao === false) {
       this.props.showAuthLoader();
       if (registrationID === null) {
         this.props.checkCpfRegistrationRequest({ cpf });
@@ -81,6 +82,8 @@ class SignIn extends React.Component {
           this.props.showAuthMessage("Data de Nascimento Incorreta");
         }
       }
+    } else if (encerrarInscricao === true) {
+      this.props.showAuthMessage("INSCRIÇÔES ENCERRADAS!");
     } else {
       this.props.showAuthMessage("CPF INVALIDO");
     }
