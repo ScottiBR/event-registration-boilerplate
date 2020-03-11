@@ -30,7 +30,6 @@ exports.postRegistrationForm = (connection, res, next, form) => {
     if (err) {
       next(err);
     } else if (resultSet.length == 0) {
-      const EVENTO_ATUAL = 8;
       const {
         cpf,
         name,
@@ -40,12 +39,13 @@ exports.postRegistrationForm = (connection, res, next, form) => {
         email,
         password,
         strBirthDay,
-        companyType
+        companyType,
+        eventID
       } = form;
       const passwordEncrypted = md5(password);
       const nameEscaped = name.replace("'", "''");
       const query_insert = `INSERT INTO inscrito (ID, CPF, EVENTO_ID, NOME, CARGO_ID, EMPRESA, EMPRESA_TIPO, CELULAR, EMAIL, DATA_INSCRICAO, SENHA, ANIVERSARIO) 
-  VALUES (NULL, '${cpf}', ${EVENTO_ATUAL}, '${nameEscaped}', ${jobId}, '${company}', '${companyType}', '${phone}', '${email}', CURDATE(), '${passwordEncrypted}', '${strBirthDay}');`;
+  VALUES (NULL, '${cpf}', ${eventID}, '${nameEscaped}', ${jobId}, '${company}', '${companyType}', '${phone}', '${email}', CURDATE(), '${passwordEncrypted}', '${strBirthDay}');`;
       connection.query(query_insert, (err, result) => {
         if (err) {
           next(err);

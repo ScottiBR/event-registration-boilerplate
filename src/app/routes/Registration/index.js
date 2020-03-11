@@ -73,7 +73,8 @@ class Registration extends React.Component {
       password,
       birthDay,
       companyType,
-      privilageUser
+      privilageUser,
+      eventConfig
     } = this.props;
 
     const mBirthDay = moment(birthDay, "DDMMYYYY");
@@ -109,7 +110,8 @@ class Registration extends React.Component {
         email,
         password,
         strBirthDay,
-        companyType
+        companyType,
+        eventID: eventConfig.EVENT_ID
       });
     }
   };
@@ -290,7 +292,7 @@ class Registration extends React.Component {
   }
 }
 const mapStateToProps = ({ auth, registration }) => {
-  const { cpf, registrationID } = auth;
+  const { cpf, registrationID, eventConfig } = auth;
   const {
     name,
     jobId,
@@ -321,7 +323,8 @@ const mapStateToProps = ({ auth, registration }) => {
     jobs,
     cities,
     privilageUser,
-    registrationID
+    registrationID,
+    eventConfig
   };
 };
 

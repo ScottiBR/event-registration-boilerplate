@@ -46,3 +46,20 @@ exports.signinWithLoginAndPassword = (connection, res, user, next) => {
     }
   });
 };
+
+exports.getCurrentEventConfig = (connection, res, next) => {
+  const query_str = `SELECT e.CELM_T_DESCRICAO as identifier, e.CELM_T_VALOR as value FROM sig_catalogos_cadastro c
+  JOIN sig_catalogos_elemento e on e.CCAD_N_CODIGO = c.CCAD_N_CODIGO
+  WHERE CCAD_T_REFERENCIA = 'CONGRESSO_INSCRICAO' `;
+  connection.query(query_str, (err, resultSet) => {
+    if (err) {
+      next(err);
+    } else if (resultSet.length == 0) {
+      res.json({
+        error: "Configurações do evento inválidas, contate o suporte!"
+      });
+    } else {
+      res.json(resultSet);
+    }
+  });
+};

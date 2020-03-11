@@ -1,3 +1,5 @@
+const EVENTO_ATUAL = 17;
+
 exports.postUnsubscribeLecture = (connection, res, next, body) => {
   const query_delete = `DELETE FROM inscrito_palestra WHERE INSCRITO_ID = ${
     body.registrationId
@@ -43,7 +45,8 @@ exports.postSubscribeLecture = (connection, res, next, body) => {
 };
 
 exports.getAllAreas = (connection, res, next) => {
-  const query_str = `select ID as id, NOME as name, EVENTO as fullName from area_interesse order by EVENTO ASC`;
+  const query_str = `select ID as id, NOME as name, EVENTO as fullName 
+    from area_interesse WHERE EVENTO_ID = ${EVENTO_ATUAL} order by EVENTO ASC`;
   connection.query(query_str, (err, resultSet) => {
     if (err) {
       next(err);
@@ -73,7 +76,7 @@ exports.getLectures = (connection, res, next, registrationID) => {
   left join inscrito_palestra i on i.PALESTRA_ID = p.ID
   group by p.ID,s.CAPACIDADE  HAVING s.CAPACIDADE = count(i.ID)) x on x.ID = p.ID
   left join inscrito_palestra i on i.PALESTRA_ID = p.ID and i.INSCRITO_ID=${registrationID}
-  WHERE p.CANCELA_INSCRICAO =0
+  WHERE p.CANCELA_INSCRICAO =0 AND p.EVENTO_ID = ${EVENTO_ATUAL}
   ORDER BY a.ORDEM ASC ,p.INICIO ASC`;
   connection.query(query_str, (err, resultSet) => {
     if (err) {
@@ -97,7 +100,7 @@ exports.getEventDetails = (connection, res, next, lectureId) => {
   p.DESCRICAO as description
   from palestra p 
   left join area_interesse a on a.ID = p.AREA_INTERESSE_ID 
-  WHERE p.ID = ${lectureId}`;
+  WHERE p.ID = ${lectureId}  AND p.EVENTO_ID = ${EVENTO_ATUAL}`;
   connection.query(query_str, (err, resultSet) => {
     if (err) {
       next(err);

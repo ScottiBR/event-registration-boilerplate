@@ -22,7 +22,8 @@ import {
   setCPF,
   showAuthMessage,
   checkCpfRegistrationRequest,
-  userSignInWithBDay
+  userSignInWithBDay,
+  getEventConfig
 } from "actions/Auth";
 
 class SignIn extends React.Component {
@@ -33,6 +34,10 @@ class SignIn extends React.Component {
       forgotPassword: false,
       birthDay: ""
     };
+  }
+
+  componentDidMount() {
+    this.props.getEventConfig();
   }
 
   componentDidUpdate() {
@@ -66,8 +71,8 @@ class SignIn extends React.Component {
   handleSignInValidation = e => {
     const { birthDay, password, forgotPassword } = this.state;
     const mBirthDay = moment(birthDay, "DDMMYYYY");
-    const encerrarInscricao = true;
-    const { cpf, registrationID } = this.props;
+    const { cpf, registrationID, eventConfig } = this.props;
+    const encerrarInscricao = moment() >= moment(eventConfig.DATE_LIMIT);
     if (isValidCpf(cpf) && encerrarInscricao === false) {
       this.props.showAuthLoader();
       if (registrationID === null) {
@@ -204,14 +209,24 @@ const mapStateToProps = ({ auth }) => {
     showMessage,
     authUser,
     registrationID,
-    cpf
+    cpf,
+    eventConfig
   } = auth;
-  return { loader, alertMessage, showMessage, authUser, registrationID, cpf };
+  return {
+    loader,
+    alertMessage,
+    showMessage,
+    authUser,
+    registrationID,
+    cpf,
+    eventConfig
+  };
 };
 
 export default connect(
   mapStateToProps,
   {
+    getEventConfig,
     userSignIn,
     hideMessage,
     showAuthLoader,

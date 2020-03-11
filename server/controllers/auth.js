@@ -1,7 +1,8 @@
 const {
   checkCpfAlreadyRegistredInDatabase,
   signinWithBdayAndRegistration,
-  signinWithLoginAndPassword
+  signinWithLoginAndPassword,
+  getCurrentEventConfig
 } = require("../models/auth");
 exports.signin = (req, res, next) => {
   try {
@@ -22,6 +23,14 @@ exports.checkCpfAlreadyRegistred = async (req, res, next) => {
 exports.signinWithBDay = async (req, res, next) => {
   try {
     signinWithBdayAndRegistration(req.connection, res, req.body, next);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getEventConfig = (req, res, next) => {
+  try {
+    getCurrentEventConfig(req.connection, res, req.body, next);
   } catch (err) {
     next(err);
   }

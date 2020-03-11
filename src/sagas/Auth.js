@@ -3,13 +3,15 @@ import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import {
   SIGNIN_USER,
   SIGNIN_CHECK_CPF_REGISTRATION_REQUEST,
-  SIGNIN_USER_WITH_BDAY
+  SIGNIN_USER_WITH_BDAY,
+  GET_EVENT_CONFIG
 } from "constants/ActionTypes";
 import { BASE_URL } from "constants/Environment";
 import {
   showAuthMessage,
   userSignInSuccess,
-  checkCpfRegistrationRecieve
+  checkCpfRegistrationRecieve,
+  getEventConfigSuccess
 } from "actions/Auth";
 
 const signInUserWithLoginPasswordRequest = async userCredentials => {
@@ -52,6 +54,11 @@ const checkCpfAlreadyRegistredRequest = async cpf => {
   );
   return await responseFromServer.json();
 };
+
+const getEventConfigRequest = async () => {
+  const responseFromServer = await fetch(`${BASE_URL}/api/auth/getEventConfig`);
+  return await responseFromServer.json();
+};
 function* signInUserWithLoginPassword({ payload }) {
   try {
     const user = yield call(signInUserWithLoginPasswordRequest, payload);
@@ -90,6 +97,22 @@ function* checkCpfAlreadyRegistred({ payload }) {
   }
 }
 
+function* getEventConfig() {
+  try {
+    const eventConfig = yield call(getEventConfigRequest);
+    if (eventConfig === null) {
+      yield put(showAuthMessage("Sem configs cadastradas"));
+    } else {
+      yield put(getEventConfigSuccess(eventConfig));
+    }
+  } catch (err) {
+    yield put(showAuthMessage(err));
+  }
+}
+
+export function* eventConfig() {
+  yield takeEvery(GET_EVENT_CONFIG, getEventConfig);
+}
 export function* signInUser() {
   yield takeEvery(SIGNIN_USER, signInUserWithLoginPassword);
 }
@@ -106,6 +129,7 @@ export default function* rootSaga() {
   yield all([
     fork(signInUser),
     fork(signInUserWithBDay),
-    fork(checkCpfRegistration)
+    fork(checkCpfRegistration),
+    fork(eventConfig)
   ]);
 }

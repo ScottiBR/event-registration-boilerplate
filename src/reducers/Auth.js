@@ -6,7 +6,8 @@ import {
   SHOW_MESSAGE,
   SIGNIN_USER_SUCCESS,
   SIGNIN_SET_CPF,
-  SIGNIN_CHECK_CPF_REGISTRATION_RECIEVE
+  SIGNIN_CHECK_CPF_REGISTRATION_RECIEVE,
+  GET_EVENT_CONFIG_SUCCESS
 } from "constants/ActionTypes";
 
 const INIT_STATE = {
@@ -16,17 +17,31 @@ const INIT_STATE = {
   initURL: "",
   authUser: null,
   cpf: "",
-  registrationID: null
+  registrationID: null,
+  eventConfig: {}
 };
 
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
+    case GET_EVENT_CONFIG_SUCCESS: {
+      const eventConfig = action.payload
+        .map(configs => ({
+          [configs.identifier]: configs.value
+        }))
+        .reduce((config, value) => ({ ...config, ...value }), {});
+      return {
+        ...state,
+        eventConfig
+      };
+    }
+
     case SIGNIN_SET_CPF: {
       return {
         ...state,
         cpf: action.payload
       };
     }
+
     case SIGNIN_CHECK_CPF_REGISTRATION_RECIEVE: {
       return {
         ...state,
@@ -34,6 +49,7 @@ export default (state = INIT_STATE, action) => {
         registrationID: action.payload
       };
     }
+
     case SIGNIN_USER_SUCCESS: {
       return {
         ...state,
@@ -41,6 +57,7 @@ export default (state = INIT_STATE, action) => {
         authUser: action.payload
       };
     }
+
     case INIT_URL: {
       return {
         ...state,
@@ -56,6 +73,7 @@ export default (state = INIT_STATE, action) => {
         loader: false
       };
     }
+
     case HIDE_MESSAGE: {
       return {
         ...state,
@@ -71,6 +89,7 @@ export default (state = INIT_STATE, action) => {
         loader: true
       };
     }
+
     case ON_HIDE_LOADER: {
       return {
         ...state,

@@ -3,9 +3,11 @@ const router = express.Router();
 const {
   signin,
   checkCpfAlreadyRegistred,
-  signinWithBDay
+  signinWithBDay,
+  getEventConfig
 } = require("../controllers/auth");
 
+router.get("/getEventConfig", getEventConfig);
 router.post("/signin", signin);
 router.post("/checkCpfAlreadyRegistred", checkCpfAlreadyRegistred);
 router.post("/signinWithBDay", signinWithBDay);

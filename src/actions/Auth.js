@@ -9,8 +9,21 @@ import {
   SIGNIN_SET_CPF,
   SIGNIN_USER_WITH_BDAY,
   SIGNIN_CHECK_CPF_REGISTRATION_REQUEST,
-  SIGNIN_CHECK_CPF_REGISTRATION_RECIEVE
+  SIGNIN_CHECK_CPF_REGISTRATION_RECIEVE,
+  GET_EVENT_CONFIG,
+  GET_EVENT_CONFIG_SUCCESS
 } from "constants/ActionTypes";
+
+export const getEventConfig = () => ({
+  type: GET_EVENT_CONFIG
+});
+
+export const getEventConfigSuccess = eventConfig => {
+  return {
+    type: GET_EVENT_CONFIG_SUCCESS,
+    payload: eventConfig
+  };
+};
 
 export const setCPF = cpf => {
   return {

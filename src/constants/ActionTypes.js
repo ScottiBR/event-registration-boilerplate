@@ -44,6 +44,8 @@ export const HANDLE_REQUEST_CLOSE = "handle_request_close";
 export const HIDE_CONTACT_LOADER = "hide_contact_loader";
 
 //Auth const
+export const GET_EVENT_CONFIG = "get_event_config";
+export const GET_EVENT_CONFIG_SUCCESS = "get_event_config_success";
 export const SIGNUP_USER = "signup_user";
 export const SIGNUP_USER_SUCCESS = "signup_user_success";
 export const SIGNIN_GOOGLE_USER = "signin_google_user";
