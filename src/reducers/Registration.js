@@ -21,7 +21,8 @@ const INIT_STATE = {
   cities: [],
   showMessage: false,
   alertMessage: "",
-  privilageUser: false
+  privilageUser: false,
+  city: ""
 };
 
 export default (state = INIT_STATE, action) => {
@@ -68,14 +69,18 @@ export default (state = INIT_STATE, action) => {
       if (action.payload.birthDay !== null) {
         momentBirthDay = moment(action.payload.birthDay).format("DDMMYYYY");
       }
+
+      const email = action.payload.email.trim()
+
       return {
         ...state,
         ...action.payload,
         privilageUser,
-        birthDay: momentBirthDay
+        birthDay: momentBirthDay,
+        email
       };
     }
-
+    
     default:
       return state;
   }

@@ -4,26 +4,31 @@ import IntlMessages from "util/IntlMessages";
 import moment from "moment";
 const areaColors = area => {
   switch (area) {
-    case "ENCONTRO DE SECRETÁRIOS DE MEIO AMBIENTE":
+    case "VIII ENCONTRO DE SECRETÁRIOS - MEIO AMBIENTE":
       return "light-green";
-    case "SEMINÁRIO DE ASSISTÊNCIA SOCIAL":
+    case "SEMINÁRIO DE SAÚDE - TERRITÓRIO REG.":
       return "sepia";
-    case "SEMINÁRIO DE TECNOLOGIA E INOVAÇÃO PUBLICA":
+    case " III SEMINÁRIO DE COOPERAÇÃO MUNICIPAL NO TERRITÓRIO REGIONAL DE SAÚDE":
+        return "sepia";
+    case "I FÓRUM MINEIRO DE CULTURA E TURISMO":
       return "info";
-    case "ENCONTRO DE PREFEITAS, VICES E VEREADORAS":
+    case " III ENCONTRO DE PREFEITAS, VICES E VEREADORAS":
       return "pink";
-    case "FÓRUM MINEIRO DE EDUCAÇÃO":
+    case "V SEMINÁRIO DE ASSISTÊNCIA SOCIAL":
       return "brown";
-    case "SEMINÁRIO DE PROCURADORES E CONTROLADORES":
+    case "ASSISTÊNCIA SOCIAL":
+      return "brown";
+    case "III SEMINÁRIO DE PROCURADORES, CONTROLADORES E OUVIDORES MUNICIPAIS":
       return "dark";
-    case "CONGRESSO MINEIRO DE VEREADORES":
+    case "CONGRESSO DE VEREADORES":
       return "deep-orange";
-    case "SEMINÁRIO DE SAÚDE":
+    case "VIII FÓRUM MINEIRO DE EDUCAÇÃO":
       return "indigo";
     default:
       return "";
   }
 };
+
 
 const Lectures = props => {
   const { id, area, title, startDate, endDate, subscribed, full } = props.data;

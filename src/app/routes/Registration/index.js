@@ -29,6 +29,11 @@ import * as validateEmail from "email-validator";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import FormLabel from "@material-ui/core/FormLabel";
 import moment from "moment";
 
@@ -52,6 +57,11 @@ class Registration extends React.Component {
   }
   handleChange = name => e => {
     this.props.handleChangeValue(name, e.target.value);
+
+    // exception for "imprensa" 
+    if(name === "jobId" && e.target.value === 126){
+      this.handleOpenDialog()
+    }
   };
   handleChangeUpperCase = name => e => {
     const valueUpper = e.target.value.toUpperCase();
@@ -74,8 +84,11 @@ class Registration extends React.Component {
       birthDay,
       companyType,
       privilageUser,
-      eventConfig
+      eventConfig,
+      city
     } = this.props;
+
+    const emailWithoutWhiteSpace = email.trim()
 
     const mBirthDay = moment(birthDay, "DDMMYYYY");
     if (
@@ -83,15 +96,16 @@ class Registration extends React.Component {
       !jobId ||
       !company ||
       !phone ||
-      !email ||
+      !emailWithoutWhiteSpace ||
       !password ||
       !birthDay ||
-      !companyType
+      !companyType ||
+      !city
     ) {
       this.props.showRegistrationMessage(`Preencha Todos os campos`);
     } else if (!isValidPhone(phone)) {
       this.props.showRegistrationMessage(`Celular: ${phone} incorreto`);
-    } else if (!validateEmail.validate(email)) {
+    } else if (!validateEmail.validate(emailWithoutWhiteSpace)) {
       this.props.showRegistrationMessage(`Email com caracteres inválidos`);
     } else if (mBirthDay.year() < 1900 || mBirthDay.year() > 2015) {
       this.props.showRegistrationMessage("Data de Nascimento Incorreta");
@@ -107,14 +121,23 @@ class Registration extends React.Component {
         jobId,
         company,
         phone,
-        email,
+        email:emailWithoutWhiteSpace,
         password,
         strBirthDay,
         companyType,
-        eventID: eventConfig.EVENT_ID
+        eventID: eventConfig.EVENT_ID,
+        city
       });
     }
   };
+
+  state = {
+    openDialog:false
+  }
+
+  handleCloseDialog = () => this.setState({openDialog:false})
+  handleOpenDialog = () => this.setState({openDialog:true})
+
   render() {
     const {
       cpf,
@@ -129,10 +152,31 @@ class Registration extends React.Component {
       alertMessage,
       jobs,
       cities,
+      city,
       companyType
     } = this.props;
     return (
       <div className="app-wrapper">
+        <Dialog
+        open={this.state.openDialog}
+        onClose={this.handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+          <DialogTitle id="alert-dialog-title">
+            {"Aviso!"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Ao se inscrever como IMPRENSA você tem acesso a todos eventos da PROGRAMAÇÃO do Congresso.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCloseDialog} autoFocus>
+              ok
+            </Button>
+          </DialogActions>
+        </Dialog>
         <div className="d-flex justify-content-center">
           <CardBox
             styleName="col-lg-6 col-md-8"
@@ -187,7 +231,25 @@ class Registration extends React.Component {
                   margin="normal"
                   className="mt-1 my-sm-3"
                 />
-                <FormControl className="w-100 mb-2">
+                  
+                <FormControl className="w-100 mt-1 my-sm-3">
+                  <InputLabel>
+                    <IntlMessages id="appModule.cityName" />
+                  </InputLabel>
+                  <Select
+                    required={true}
+                    value={city}
+                    onChange={this.handleChangeUpperCase("city")}
+                  >
+                    {cities.map(city => (
+                      <MenuItem key={city.id} value={city.name}>
+                        {city.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl className="w-100 mt-1 my-sm-3">
                   <InputLabel>
                     <IntlMessages id="appModule.job" />
                   </InputLabel>
@@ -306,7 +368,8 @@ const mapStateToProps = ({ auth, registration }) => {
     alertMessage,
     jobs,
     cities,
-    privilageUser
+    privilageUser,
+    city
   } = registration;
   return {
     cpf,
@@ -324,7 +387,8 @@ const mapStateToProps = ({ auth, registration }) => {
     cities,
     privilageUser,
     registrationID,
-    eventConfig
+    eventConfig,
+    city
   };
 };
 
