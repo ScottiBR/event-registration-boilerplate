@@ -99,8 +99,7 @@ class Registration extends React.Component {
       !emailWithoutWhiteSpace ||
       !password ||
       !birthDay ||
-      !companyType ||
-      !city
+      !companyType
     ) {
       this.props.showRegistrationMessage(`Preencha Todos os campos`);
     } else if (!isValidPhone(phone)) {
@@ -113,7 +112,11 @@ class Registration extends React.Component {
       this.props.showRegistrationMessage(
         "Você selecionou um cargo que não condiz com a sua função =)"
       );
-    } else {
+    }
+    else if (this.state.region === "MG" && !city) {
+      this.props.showRegistrationMessage("Cidade Obrigatória");
+    }
+     else {
       const strBirthDay = mBirthDay.format("YYYY-MM-DD");
       this.props.submitRegistrationForm({
         cpf,
@@ -126,17 +129,22 @@ class Registration extends React.Component {
         strBirthDay,
         companyType,
         eventID: eventConfig.EVENT_ID,
-        city
+        city: this.state.region === "MG"? city : ""
       });
     }
   };
 
   state = {
-    openDialog:false
+    openDialog:false,
+    region:"MG"
   }
 
   handleCloseDialog = () => this.setState({openDialog:false})
   handleOpenDialog = () => this.setState({openDialog:true})
+  handleChangeRegion = (event) => {
+    this.setState({region: event.target.value})
+    this.props.handleChangeValue("companyType", "O");
+  }
 
   render() {
     const {
@@ -231,8 +239,29 @@ class Registration extends React.Component {
                   margin="normal"
                   className="mt-1 my-sm-3"
                 />
-                  
-                <FormControl className="w-100 mt-1 my-sm-3">
+
+                <FormControl component="fieldset" required>
+                  <RadioGroup
+                    className="d-flex flex-row mt-3"
+                    aria-label="state"
+                    name="state"
+                    value={this.state.region}
+                    onChange={this.handleChangeRegion}
+                  >
+                    <FormControlLabel
+                      value="MG"
+                      control={<Radio color="primary" />}
+                      label="MG"
+                    />
+                    <FormControlLabel
+                      value="OUTROS"
+                      control={<Radio color="primary" />}
+                      label="Outros Estados"
+                    />
+                  </RadioGroup>
+                </FormControl>
+
+                { this.state.region === "MG" && (<FormControl className="w-100 mt-1 my-sm-3">
                   <InputLabel>
                     <IntlMessages id="appModule.cityName" />
                   </InputLabel>
@@ -247,7 +276,7 @@ class Registration extends React.Component {
                       </MenuItem>
                     ))}
                   </Select>
-                </FormControl>
+                </FormControl>)}
 
                 <FormControl className="w-100 mt-1 my-sm-3">
                   <InputLabel>
@@ -265,36 +294,36 @@ class Registration extends React.Component {
                     ))}
                   </Select>
                 </FormControl>
-
-                <FormControl component="fieldset" required>
-                  <FormLabel component="legend">
-                    <IntlMessages id="appModule.companyType" />
-                  </FormLabel>
-                  <RadioGroup
-                    className="d-flex flex-row"
-                    aria-label="gender"
-                    name="gender"
-                    value={companyType}
-                    onChange={this.handleChangeUpperCase("companyType")}
-                  >
-                    <FormControlLabel
-                      value="P"
-                      control={<Radio color="primary" />}
-                      label={<IntlMessages id="appModule.cityHall" />}
-                    />
-                    <FormControlLabel
-                      value="C"
-                      control={<Radio color="primary" />}
-                      label={<IntlMessages id="appModule.cityCouncil" />}
-                    />
-                    <FormControlLabel
-                      value="O"
-                      control={<Radio color="primary" />}
-                      label={<IntlMessages id="appModule.other" />}
-                    />
-                  </RadioGroup>
-                </FormControl>
-
+                { this.state.region === "MG" && (
+                  <FormControl component="fieldset" required>
+                    <FormLabel component="legend">
+                      <IntlMessages id="appModule.companyType" />
+                    </FormLabel>
+                    <RadioGroup
+                      className="d-flex flex-row"
+                      aria-label="gender"
+                      name="gender"
+                      value={companyType}
+                      onChange={this.handleChangeUpperCase("companyType")}
+                    >
+                      <FormControlLabel
+                        value="P"
+                        control={<Radio color="primary" />}
+                        label={<IntlMessages id="appModule.cityHall" />}
+                      />
+                      <FormControlLabel
+                        value="C"
+                        control={<Radio color="primary" />}
+                        label={<IntlMessages id="appModule.cityCouncil" />}
+                      />
+                      <FormControlLabel
+                        value="O"
+                        control={<Radio color="primary" />}
+                        label={<IntlMessages id="appModule.other" />}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                )}
                 {companyType === "O" ? (
                   <TextField
                     label={<IntlMessages id="appModule.company" />}
