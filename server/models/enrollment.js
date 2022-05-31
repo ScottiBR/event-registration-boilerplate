@@ -1,4 +1,4 @@
-const EVENTO_ATUAL = 17;
+const EVENTO_ATUAL = 46;
 
 exports.postUnsubscribeLecture = (connection, res, next, body) => {
   const query_delete = `DELETE FROM inscrito_palestra WHERE INSCRITO_ID = ${

@@ -31,11 +31,11 @@ const LecturesFilter = props => {
         >
           <FormControlLabel
             label={<IntlMessages id="pages.enrollment.filter.firstDay" />}
-            value="05"
+            value="2022-06-01"
             control={<Radio color="primary" />}
           />
           <FormControlLabel
-            value="06"
+            value="2022-06-02"
             control={<Radio color="primary" />}
             label={<IntlMessages id="pages.enrollment.filter.secondDay" />}
           />
